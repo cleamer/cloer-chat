@@ -1,0 +1,20 @@
+:root {
+  --color-background: #202124;
+  --color-background-light-1: #edddc9;
+  --color-background-light-2: burlywood;
+  --color-background-highlight: coral;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  outline: none;
+}
+body {
+  font-size: 16px;
+  background-color: var(--color-background);
+}
+a {
+  text-decoration: none;
+}

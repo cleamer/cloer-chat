@@ -1,0 +1,16 @@
+.App {
+  width: 100vw;
+  height: 100vh;
+}
+.flex-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.frame {
+  width: 450px;
+  height: 750px;
+  border-radius: 5px;
+  overflow: hidden;
+  background-color: var(--color-background-light-2);
+}
