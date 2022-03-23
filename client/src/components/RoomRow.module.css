@@ -1,0 +1,15 @@
+.row {
+  width: 100%;
+  min-height: 3rem;
+  padding: 16px 10px;
+  background-color: var(--color-background-highlight);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-radius: 5px;
+  transition: 0.3s all ease;
+  margin-bottom: 10px;
+}
+.row:hover {
+  transform: scaleY(1.1) scaleX(1.02);
+}

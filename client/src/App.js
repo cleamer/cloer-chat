@@ -1,15 +1,16 @@
-import './App.css';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
-import { Lobby } from './layouts';
+import { Lobby, Sign } from './layouts';
+import { Home, SignIn, SignUp } from './contents';
+import styles from './App.module.css';
 
 function App() {
   return (
-    <div className='App flex-center'>
-      <div className='frame'>
+    <div className={styles.App}>
+      <div className={styles.frame}>
         <BrowserRouter>
           <Routes>
             <Route path='/' element={<Lobby />}>
-              <Route index element={<>Home</>} />
+              <Route index element={<Home />} />
               <Route path='profile' element={<>profile</>} />
               <Route path='chats' element={<>chats</>} />
               <Route path='*' element={<Navigate to='/' />} />
@@ -18,8 +19,10 @@ function App() {
               <Route index element={<Navigate to='/chats' />} />
               <Route path=':roomid' element={<>chat!!</>} />
             </Route>
-            <Route path='/signin' element={<>sign in</>} />
-            <Route path='/signup' element={<>sign up</>} />
+            <Route element={<Sign />}>
+              <Route path='/signin' element={<SignIn />} />
+              <Route path='/signup' element={<SignUp />} />
+            </Route>
           </Routes>
         </BrowserRouter>
       </div>
