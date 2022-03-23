@@ -1,4 +1,3 @@
-import React from 'react';
 import RoomRow from './RoomRow';
 import styles from './RoomList.module.css';
 
