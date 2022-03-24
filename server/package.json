@@ -8,6 +8,11 @@
     "start": "nodemon app.js",
     "test": "jest"
   },
+  "nodemonConfig": {
+    "ignore": [
+      "**/sessions/*"
+    ]
+  },
   "author": "cloer",
   "license": "MIT",
   "dependencies": {

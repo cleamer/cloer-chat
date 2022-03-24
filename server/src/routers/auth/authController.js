@@ -1,4 +1,5 @@
 import bcrypt from 'bcrypt';
+import passport from 'passport';
 import authModel from './authModel.js';
 import { errorMessage, successMessage, baseMessage } from '../../lib/responseMessage.js';
 import validate from '../../lib/validate.js';
@@ -41,21 +42,23 @@ const signUp = async (req, res) => {
   }
 };
 
-const signIn = async (req, res) => {
-  try {
-    const { email, password } = req.body;
+const signIn = (req, res, next) => {
+  const { email, password } = req.body;
 
-    // validation
-    if (!validate.email(email)) return res.json(errorMessage(baseMessage.INVALID_EMAIL));
-    if (!validate.password(password)) return res.json(errorMessage(baseMessage.INVALID_PASSWORD));
+  // validation
+  if (!validate.email(email)) return res.json(errorMessage(baseMessage.INVALID_EMAIL));
+  if (!validate.password(password)) return res.json(errorMessage(baseMessage.INVALID_PASSWORD));
 
-    // TODO: DB check
-
-    return res.json({ here: 'sign in' });
-  } catch (error) {
-    console.error(error);
-    return res.json(errorMessage(baseMessage.SERVER_ERROR));
-  }
+  passport.authenticate('local', (error, user, loginFailMessage) => {
+    if (error ?? loginFailMessage) return res.json(errorMessage(error ?? loginFailMessage));
+    return req.login(user, (loginError) => {
+      if (loginError) {
+        console.error(loginError);
+        return res.json(errorMessage(baseMessage.SERVER_ERROR));
+      }
+      return res.json(successMessage(baseMessage.SUCCESS_SIGNIN));
+    });
+  })(req, res, next);
 };
 
 export default { signUp, signIn };

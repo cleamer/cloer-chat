@@ -14,7 +14,7 @@ content-type: application/json
 
 {
   "email":"cloer@gmail.com",
-  "password":"testpassword123"
+  "password":"Password1!"
 }
 
 ### [GET] list of total rooms
