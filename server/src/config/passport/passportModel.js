@@ -17,7 +17,7 @@ const getUserByUserId = async (userId) => {
   const connection = await pool.getConnection(async (conn) => conn);
   const [getUserByUserIdResult] = await connection.query(
     `
-    SELECT userId, email, nickname, password, updatedAt ,status
+    SELECT userId, email, nickname
     FROM Users
     WHERE userId = ? AND status = 'a'
     ;`,
