@@ -8,20 +8,3 @@
   border-radius: 5px;
   background-color: var(--color-background-light-1);
 }
-.signBox input {
-  width: 20em;
-  font-size: 16px;
-  font-weight: 500;
-  line-height: 2em;
-  color: var(--color-background);
-  background-color: rgba(0, 0, 0, 0);
-  border: 0px;
-  border-bottom: 2px solid var(--color-background-light-2);
-  margin-bottom: 1.25em;
-  padding: 0.25rem 0.75rem;
-}
-.signBox input[type='submit'] {
-  background-color: var(--color-background-light-2);
-  border-radius: 5px;
-  margin-top: 2rem;
-}
