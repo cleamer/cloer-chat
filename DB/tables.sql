@@ -1,7 +1,7 @@
 -- Create Tables
 CREATE TABLE Users(
     `userId` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
-    `email` VARCHAR(40) NOT NULL UNIQUE ,
+    `email` VARCHAR(64) NOT NULL UNIQUE ,
     `nickname` VARCHAR(10) NOT NULL UNIQUE ,
     `password` VARCHAR(100) NULL ,
     `provider` VARCHAR(6) NOT NULL DEFAULT 'local',
