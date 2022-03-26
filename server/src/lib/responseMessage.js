@@ -5,7 +5,8 @@ const JsonMessage = (isSuccess, code, message) => ({ isSuccess, code, message })
 export const baseMessage = {
   // 2XXX: Succcess
   SUCCESS_INSERT_USER: JsonMessage(true, 2000, 'It was successed to insert a user.'),
-  SUCCESS_SIGNIN: JsonMessage(true, 2002, 'It was successed to sign in.'),
+  SUCCESS_SIGNIN: JsonMessage(true, 2001, 'It was successed to sign in.'),
+  SUCCESS_SIGNOUT: JsonMessage(true, 2002, 'It was successed to sign out.'),
 
   // 3XXX: Validation error
   INVALID_EMAIL: JsonMessage(false, 3000, 'Wrong or invalid e-mail address.'),

@@ -45,6 +45,8 @@ const signUp = async (req, res) => {
 const signIn = (req, res, next) => {
   const { email, password } = req.body;
 
+  // TODO: limit try to sign in
+
   // validation
   if (!validate.email(email)) return res.json(errorMessage(baseMessage.INVALID_EMAIL));
   if (!validate.password(password)) return res.json(errorMessage(baseMessage.INVALID_PASSWORD));
@@ -61,4 +63,13 @@ const signIn = (req, res, next) => {
   })(req, res, next);
 };
 
-export default { signUp, signIn };
+const signOut = (req, res) => {
+  // TODO: sign out
+  req.logout();
+  req.session.destroy();
+  res.json(successMessage(baseMessage.SUCCESS_SIGNOUT));
+};
+
+// TODO: google login
+
+export default { signUp, signIn, signOut };
