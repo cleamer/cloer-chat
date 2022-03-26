@@ -38,4 +38,17 @@ app.use(passport.session());
 // Routers
 app.use('/api', APIrouters);
 
+// Error exeption
+import { baseMessage, errorMessage } from './src/lib/responseMessage.js';
+app.use((req, res, next) => next(null));
+app.use((err, req, res, next) => {
+  let message;
+  if (err === null) message = baseMessage.WRONG_PATH;
+  else {
+    console.error(err);
+    message = baseMessage.SERVER_ERROR;
+  }
+  res.json(errorMessage(message));
+});
+
 const expressServer = app.listen(app.get('port'), () => console.log(`cloer chat server is running on port ${app.get('port')}`));

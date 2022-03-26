@@ -24,6 +24,7 @@ export const baseMessage = {
   // 4XXX: Wrong request
   LOGIN_REQUIRED: JsonMessage(false, 4000, 'Must be logged in.'),
   LOGOUT_REQUIRED: JsonMessage(false, 4001, 'Must be logged out'),
+  WRONG_PATH: JsonMessage(false, 4004, 'Wrong path.'),
 
   // 5:XXX Server error
   DB_ERROR: JsonMessage(false, 5000, 'Database Error!'),
