@@ -1,10 +1,9 @@
 import bcrypt from 'bcrypt';
-import passport from 'passport';
-import userModel from '../user/userModel.js';
+import userModel from './userModel.js';
 import { errorMessage, successMessage, baseMessage } from '../../lib/responseMessage.js';
 import validate from '../../lib/validate.js';
 
-const signUp = async (req, res) => {
+const createUser = async (req, res) => {
   try {
     const { email, nickname, password } = req.body;
 
@@ -42,33 +41,4 @@ const signUp = async (req, res) => {
   }
 };
 
-const signIn = (req, res, next) => {
-  const { email, password } = req.body;
-
-  // TODO: limit try to sign in
-
-  // validation
-  if (!validate.email(email)) return res.json(errorMessage(baseMessage.INVALID_EMAIL));
-  if (!validate.password(password)) return res.json(errorMessage(baseMessage.INVALID_PASSWORD));
-
-  passport.authenticate('local', (error, user, loginFailMessage) => {
-    if (error ?? loginFailMessage) return res.json(errorMessage(error ?? loginFailMessage));
-    return req.login(user, (loginError) => {
-      if (loginError) {
-        console.error(loginError);
-        return res.json(errorMessage(baseMessage.SERVER_ERROR));
-      }
-      return res.json(successMessage(baseMessage.SUCCESS_SIGNIN));
-    });
-  })(req, res, next);
-};
-
-const signOut = (req, res) => {
-  req.logout();
-  req.session.destroy();
-  res.json(successMessage(baseMessage.SUCCESS_SIGNOUT));
-};
-
-// TODO: google login
-
-export default { signUp, signIn, signOut };
+export default { createUser };
