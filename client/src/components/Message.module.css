@@ -1,0 +1,30 @@
+.chatBox {
+  padding: 0.8rem 0.5rem 0;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+.fromMe {
+  flex-direction: row-reverse;
+  justify-content: flex-start;
+}
+.nickname {
+  margin-bottom: 0.3rem;
+  margin-left: 0.4rem;
+}
+.messageBox {
+  display: flex;
+  align-items: flex-end;
+}
+
+.message {
+  background-color: yellow;
+  padding: 0.625rem;
+  border-radius: 15px;
+  max-width: 85%;
+}
+.space {
+  width: 0.4rem;
+}
+.time {
+}

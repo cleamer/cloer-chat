@@ -1,5 +1,5 @@
 .main {
-  height: 630px;
+  height: var(--height-main);
   padding: 10px;
   display: flex;
   justify-content: center;

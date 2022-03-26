@@ -1,8 +1,12 @@
 :root {
+  --width-frame: 450px;
+  --height-frame: 750px;
+  --height-header: 60px;
+  --height-main: 630px;
   --color-background: #202124;
   --color-background-light-1: #edddc9;
   --color-background-light-2: burlywood;
-  --color-background-highlight: coral;
+  --color-background-coral: coral;
 }
 
 * {
@@ -17,4 +21,8 @@ body {
 }
 a {
   text-decoration: none;
+}
+a:visited,
+a:link {
+  color: var(--color-background);
 }

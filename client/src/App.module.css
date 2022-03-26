@@ -6,8 +6,8 @@
   align-items: center;
 }
 .frame {
-  width: 450px;
-  height: 750px;
+  width: var(--width-frame);
+  height: var(--height-frame);
   border-radius: 5px;
   overflow: hidden;
   background-color: var(--color-background-light-2);

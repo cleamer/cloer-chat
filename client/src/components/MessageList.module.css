@@ -1,0 +1,10 @@
+.chatBox {
+  width: 100%;
+  height: var(--height-main);
+  background-color: var(--color-background-coral);
+  padding: 0.5rem;
+  overflow: scroll;
+  display: flex;
+  flex-direction: column-reverse;
+  border-bottom: 1px solid var(--color-background-coral);
+}
