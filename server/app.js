@@ -40,15 +40,10 @@ app.use('/api', APIrouters);
 
 // Error exeption
 import { baseMessage, errorMessage } from './src/lib/responseMessage.js';
-app.use((req, res, next) => next(null));
+app.use((req, res, next) => res.json(errorMessage(baseMessage.WRONG_PATH)));
 app.use((err, req, res, next) => {
-  let message;
-  if (err === null) message = baseMessage.WRONG_PATH;
-  else {
-    console.error(err);
-    message = baseMessage.SERVER_ERROR;
-  }
-  res.json(errorMessage(message));
+  console.error(err);
+  return res.json(errorMessage(baseMessage.SERVER_ERROR));
 });
 
 const expressServer = app.listen(app.get('port'), () => console.log(`cloer chat server is running on port ${app.get('port')}`));

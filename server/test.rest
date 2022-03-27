@@ -1,26 +1,50 @@
-### [POST] sign up 
-POST http://localhost:3001/api/auth/signup HTTP/1.1
+### sign in 
+### [POST] /api/auth 
+POST http://localhost:3001/api/auth/ HTTP/1.1
 content-type: application/json
 
 {
   "email": "cloer@gmail.com",
-  "nickname":"cloer",
   "password": "Password1!"
 }
 
-### [POST] sign in
-POST http://localhost:3001/api/auth/signin HTTP/1.1
+### sign out
+### [get] /api/auth
+GET http://localhost:3001/api/auth/ HTTP/1.1
+content-type: application/json
+
+### sign up
+### [POST] /api/users
+POST http://localhost:3001/api/users HTTP/1.1
 content-type: application/json
 
 {
   "email":"cloer@gmail.com",
+  "nickname":"cloer",
   "password":"Password1!"
 }
 
-### [GET] list of total rooms
+### create a new room
+### [POST] /api/rooms
+POST http://localhost:3001/api/rooms HTTP/1.1
+content-type: application/json
+
+{
+  "title":"first room!!",
+  "password":"roomPassword"
+}
+
+### get list of total rooms
+### [GET] /api/rooms
 GET http://localhost:3001/api/rooms HTTP/1.1
 content-type: application/json
 
-### [GET] list of rooms the user joined
+### get list of rooms the user joined
+### [GET] /api/rooms/:userId
 GET http://localhost:3001/api/rooms/1 HTTP/1.1
+content-type: application/json
+
+### Not Found
+### [GET] /wrong path
+GET http://localhost:3001/wrongpath HTTP/1.1
 content-type: application/json
