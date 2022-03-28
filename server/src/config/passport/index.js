@@ -9,7 +9,7 @@ passport.serializeUser((user, done) => done(null, user.userId));
 passport.deserializeUser(async (userId, done) => {
   try {
     const [user] = await userModel.getUserByUserId(userId);
-    if (!user) return done(null, false, baseMessage.CANNOT_FIND_USERID); // FIXME: just in case
+    if (!user) return done(null, false, baseMessage.CANNOT_FIND_USERID);
     return done(null, user);
   } catch (error) {
     console.error(error);

@@ -4,12 +4,13 @@ export const successMessage = (message, result) => ({ ...message, result });
 const JsonMessage = (isSuccess, code, message) => ({ isSuccess, code, message });
 export const baseMessage = {
   // 2XXX: Succcess
-  SUCCESS_INSERT_USER: JsonMessage(true, 2000, 'It was successed to create a user.'),
-  SUCCESS_SIGNIN: JsonMessage(true, 2001, 'It was successed to sign in.'),
-  SUCCESS_SIGNOUT: JsonMessage(true, 2002, 'It was successed to sign out.'),
-  SUCCESS_INSERT_ROOM: JsonMessage(true, 2003, 'It was successed to create a room.'),
-  SUCCESS_JOIN_ROOM: JsonMessage(true, 2004, 'It was successed to join the room.'),
-  SUCCESS_LEAVE_ROOM: JsonMessage(true, 2004, 'It was successed to leave the room.'),
+  SUCCESS_INSERT_USER: JsonMessage(true, 2000, 'It has succeeded to create a new user.'),
+  SUCCESS_SIGNIN: JsonMessage(true, 2001, 'It has succeeded to sign in.'),
+  SUCCESS_SIGNOUT: JsonMessage(true, 2002, 'It has succeeded to sign out.'),
+  SUCCESS_INSERT_ROOM: JsonMessage(true, 2003, 'It has succeeded to create a new room'),
+  SUCCESS_JOIN_ROOM: JsonMessage(true, 2004, 'It has succeeded to join the room.'),
+  SUCCESS_LEAVE_ROOM: JsonMessage(true, 2004, 'It has succeeded to leave the room.'),
+  SUCCESS_GET_ALL_ROOMS: JsonMessage(true, 2004, 'It has succeeded to get all rooms.'),
 
   // 3XXX: Validation error
   INVALID_EMAIL: JsonMessage(false, 3000, 'Wrong or invalid e-mail address.'),
