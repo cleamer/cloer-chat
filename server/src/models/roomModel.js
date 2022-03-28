@@ -37,5 +37,42 @@ const insertRoom = async (title, password) => {
   connection.release();
   return insertRoomResult;
 };
+const deleteRoom = async (roomId) => {
+  const connection = await pool.getConnection(async (conn) => conn);
+  const [deleteRoomResult] = await connection.query(
+    `
+    UPDATE Rooms SET status = 'd' WHERE roomId = ?
+    ;`,
+    [roomId]
+  );
+  connection.release();
+  return deleteRoomResult;
+};
+const selectAllRooms = async () => {
+  const connection = await pool.getConnection(async (conn) => conn);
+  const [selectAllRoomsResult] = await connection.query(
+    `
+    SELECT roomId, title
+    FROM Rooms
+    WHERE status = 'a'
+    ;`
+  );
+  connection.release();
+  return selectAllRoomsResult;
+};
+const countUsersInRoom = async (roomId) => {
+  const connection = await pool.getConnection(async (conn) => conn);
+  const [countUsersInRoomResult] = await connection.query(
+    `
+    SELECT count(*) as count
+    FROM Rooms R
+    JOIN Users_Rooms UR on R.roomId = UR.roomId
+    WHERE R.roomId = ? AND UR.status = 'a';
+    ;`,
+    [roomId]
+  );
+  connection.release();
+  return countUsersInRoomResult;
+};
 
-export default { checkRoomIdExists, checkTitleExists, insertRoom };
+export default { checkRoomIdExists, checkTitleExists, insertRoom, deleteRoom, selectAllRooms, countUsersInRoom };

@@ -5,6 +5,6 @@ import roomController from './roomController.js';
 
 router.post('/', roomController.createRoom);
 router.get('/', roomController.getAllRooms);
-router.delete('/', roomController.deleteRoom);
+// router.delete('/:roomId', roomController.deleteRoom);
 
 export default router;

@@ -25,6 +25,7 @@ const createUser = async (req, res) => {
       console.error(doesNicknameExist.reason);
       return res.json(errorMessage(baseMessage.DB_ERROR));
     }
+    //TODO: deleted user
     if (doesEmailExist.value.length) return res.json(errorMessage(baseMessage.EXISTING_EMAIL));
     if (doesNicknameExist.value.length) return res.json(errorMessage(baseMessage.EXISTING_NICKNAME));
 
@@ -101,13 +102,24 @@ const leaveRoom = async (req, res) => {
     const userRoomExistsResult = await userRoomModel.checkUserRoomExists(userId, roomId).catch((error) => console.log(error));
     if (userRoomExistsResult === undefined) return res.json(errorMessage(baseMessage.DB_ERROR));
 
-    if (userRoomExistsResult[0]?.status === 'a') {
-      const userRoomId = userRoomExistsResult[0].user_roomId;
-      const deleteUserRoomResult = await userRoomModel.deleteUserRoom(userRoomId).catch((error) => console.error(error));
-      if (deleteUserRoomResult === undefined) return res.json(errorMessage(baseMessage.DB_ERROR));
-      return res.json(successMessage(baseMessage.SUCCESS_LEAVE_ROOM, { userId, roomId }));
+    const [userRoomExists] = userRoomExistsResult;
+    // no user_room: undefined & deleted user_room: 'd'
+    if (userRoomExists?.status !== 'a') return res.json(errorMessage(baseMessage.USER_NOT_IN_ROOM));
+
+    const userRoomId = userRoomExists.user_roomId;
+    const deleteUserRoomResult = await userRoomModel.deleteUserRoom(userRoomId).catch((error) => console.error(error));
+    if (deleteUserRoomResult === undefined) return res.json(errorMessage(baseMessage.DB_ERROR));
+
+    const countUsersInRoomResult = await roomModel.countUsersInRoom(roomId).catch((error) => console.error(error));
+    if (countUsersInRoomResult === undefined) return res.json(errorMessage(baseMessage.DB_ERROR));
+    const [{ count }] = countUsersInRoomResult;
+    if (!count) {
+      const deleteRoomResult = await roomModel.deleteRoom(roomId).catch((error) => console.error(error));
+      if (deleteRoomResult === undefined) return res.json(errorMessage(baseMessage.DB_ERROR));
+      //TODO: socket broadcast: a room was deleted
     }
-    return res.json(errorMessage(baseMessage.USER_NOT_IN_ROOM));
+
+    return res.json(successMessage(baseMessage.SUCCESS_LEAVE_ROOM, { userId, roomId }));
   } catch (error) {
     console.error(error);
     return res.json(errorMessage(baseMessage.SERVER_ERROR));
