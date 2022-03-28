@@ -65,22 +65,21 @@ a real time web chat api server
 
 # API Document
 
-| protocol | method | path               | discription                            | done |
-| :------: | :----: | :----------------- | -------------------------------------- | :--: |
-|   HTTP   |  POST  | /auth              | sign in                                |  ✅  |
-|   HTTP   |  GET   | /auth              | sign out                               |  ✅  |
-|   HTTP   |  POST  | /users             | sign up(create a new user)             |  ✅  |
-|   HTTP   |  GET   | /users/:userId     | get informations about the user        |  ☑️  |
-|   HTTP   | PATCH  | /users/:userId     | update the user informations           |  ☑️  |
-|   HTTP   | DELETE | /users/:userId     | delete the user account                |  ☑️  |
-|   HTTP   |  GET   | /users/in/:roomId  | the user joins the room                |  ✅  |
-|   HTTP   |  GET   | /users/out/:roomId | the user leaves the room               |  ✅  |
-|   HTTP   |  POST  | /rooms             | create a new room                      |  ✅  |
-|   HTTP   |  GET   | /rooms             | get all rooms                          |  ☑️  |
-|   HTTP   |  GET   | /rooms/:userId     | get all the rooms the user joined      |  ☑️  |
-|   HTTP   | DELETE | /rooms/:roomId     | delete the room when the room is empty |  ☑️  |
-|   HTTP   |  POST  | /chats             | save a new chat                        |  ☑️  |
-|   HTTP   |  GET   | /chats/:roomId     | get chats in the room                  |  ☑️  |
+| protocol | method | path               | discription                       | done |
+| :------: | :----: | :----------------- | --------------------------------- | :--: |
+|   HTTP   |  POST  | /auth              | sign in                           |  ✅  |
+|   HTTP   |  GET   | /auth              | sign out                          |  ✅  |
+|   HTTP   |  POST  | /users             | sign up(create a new user)        |  ✅  |
+|   HTTP   |  GET   | /users/:userId     | get informations about the user   |  ☑️  |
+|   HTTP   | PATCH  | /users/:userId     | update the user informations      |  ☑️  |
+|   HTTP   | DELETE | /users/:userId     | delete the user account           |  ☑️  |
+|   HTTP   |  GET   | /users/in/:roomId  | the user joins the room           |  ✅  |
+|   HTTP   |  GET   | /users/out/:roomId | the user leaves the room          |  ✅  |
+|   HTTP   |  POST  | /rooms             | create a new room                 |  ✅  |
+|   HTTP   |  GET   | /rooms             | get all rooms                     |  ☑️  |
+|   HTTP   |  GET   | /rooms/:userId     | get all the rooms the user joined |  ☑️  |
+|   HTTP   |  POST  | /chats             | save a new chat                   |  ☑️  |
+|   HTTP   |  GET   | /chats/:roomId     | get chats in the room             |  ☑️  |
 
 <br>
 <br>

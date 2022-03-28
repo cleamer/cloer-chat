@@ -19,8 +19,8 @@ POST http://localhost:3001/api/users HTTP/1.1
 content-type: application/json
 
 {
-  "email":"cloer@gmail.com",
-  "nickname":"cloer",
+  "email":"cloer2@gmail.com",
+  "nickname":"cloer2",
   "password":"Password1!"
 }
 
@@ -30,21 +30,20 @@ POST http://localhost:3001/api/rooms HTTP/1.1
 content-type: application/json
 
 {
-  "title":"first room!",
-  "password":"roomPassword"
+  "title":"second room!"
 }
 
 ### ✅ join the room
 ### [GET] /api/users/in/:roomId
-GET http://localhost:3001/api/users/in/1 HTTP/1.1
+GET http://localhost:3001/api/users/in/2 HTTP/1.1
 content-type: application/json
 
 ### ✅ leave the room
 ### [POST] /api/users/out/:roomId
-GET http://localhost:3001/api/users/out/1 HTTP/1.1
+GET http://localhost:3001/api/users/out/2 HTTP/1.1
 content-type: application/json
 
-### get list of total rooms
+### ✅ get list of total rooms
 ### [GET] /api/rooms
 GET http://localhost:3001/api/rooms HTTP/1.1
 content-type: application/json
