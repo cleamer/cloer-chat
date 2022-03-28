@@ -13,7 +13,7 @@ passport.deserializeUser(async (userId, done) => {
     return done(null, user);
   } catch (error) {
     console.error(error);
-    return done(baseMessage.DB_ERROR);
+    return done(new Error(baseMessage.DB_ERROR.message));
   }
 });
 

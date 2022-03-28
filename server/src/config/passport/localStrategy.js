@@ -9,7 +9,7 @@ export default () => {
     new LocalStrategy({ usernameField: 'email', passwordField: 'password' }, async (email, password, done) => {
       try {
         const getUserByEmailResult = await userModel.getUserByEmail(email).catch((error) => console.error(error));
-        if (getUserByEmailResult === undefined) return done(baseMessage.DB_ERROR);
+        if (getUserByEmailResult === undefined) return done(new Error(baseMessage.DB_ERROR.message));
 
         // users: [] | [ { status: 'a' | 'd' }, ...]
         // TODO: deal with deleted user

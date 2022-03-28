@@ -1,4 +1,4 @@
-### sign in 
+### ✅ sign in 
 ### [POST] /api/auth 
 POST http://localhost:3001/api/auth/ HTTP/1.1
 content-type: application/json
@@ -8,12 +8,12 @@ content-type: application/json
   "password": "Password1!"
 }
 
-### sign out
+### ✅ sign out 
 ### [get] /api/auth
 GET http://localhost:3001/api/auth/ HTTP/1.1
 content-type: application/json
 
-### sign up
+### ✅ sign up
 ### [POST] /api/users
 POST http://localhost:3001/api/users HTTP/1.1
 content-type: application/json
@@ -24,15 +24,25 @@ content-type: application/json
   "password":"Password1!"
 }
 
-### create a new room
+### ✅ create a new room
 ### [POST] /api/rooms
 POST http://localhost:3001/api/rooms HTTP/1.1
 content-type: application/json
 
 {
-  "title":"first room!!",
+  "title":"first room!",
   "password":"roomPassword"
 }
+
+### ✅ join the room
+### [GET] /api/users/in/:roomId
+GET http://localhost:3001/api/users/in/1 HTTP/1.1
+content-type: application/json
+
+### ✅ leave the room
+### [POST] /api/users/out/:roomId
+GET http://localhost:3001/api/users/out/1 HTTP/1.1
+content-type: application/json
 
 ### get list of total rooms
 ### [GET] /api/rooms
@@ -44,7 +54,7 @@ content-type: application/json
 GET http://localhost:3001/api/rooms/1 HTTP/1.1
 content-type: application/json
 
-### Not Found
+### ✅ Not Found
 ### [GET] /wrong path
 GET http://localhost:3001/wrongpath HTTP/1.1
 content-type: application/json

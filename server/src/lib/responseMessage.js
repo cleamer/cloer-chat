@@ -4,9 +4,12 @@ export const successMessage = (message, result) => ({ ...message, result });
 const JsonMessage = (isSuccess, code, message) => ({ isSuccess, code, message });
 export const baseMessage = {
   // 2XXX: Succcess
-  SUCCESS_INSERT_USER: JsonMessage(true, 2000, 'It was successed to insert a user.'),
+  SUCCESS_INSERT_USER: JsonMessage(true, 2000, 'It was successed to create a user.'),
   SUCCESS_SIGNIN: JsonMessage(true, 2001, 'It was successed to sign in.'),
   SUCCESS_SIGNOUT: JsonMessage(true, 2002, 'It was successed to sign out.'),
+  SUCCESS_INSERT_ROOM: JsonMessage(true, 2003, 'It was successed to create a room.'),
+  SUCCESS_JOIN_ROOM: JsonMessage(true, 2004, 'It was successed to join the room.'),
+  SUCCESS_LEAVE_ROOM: JsonMessage(true, 2004, 'It was successed to leave the room.'),
 
   // 3XXX: Validation error
   INVALID_EMAIL: JsonMessage(false, 3000, 'Wrong or invalid e-mail address.'),
@@ -21,12 +24,21 @@ export const baseMessage = {
   INCORRECT_PASSWORD: JsonMessage(false, 3007, 'Your password is incorrect'),
   // DORMANT_ACCOUNT: JsonMessage(false, 3005, 'Your account is a dormant account.'),
 
+  INVALID_TITLE: JsonMessage(false, 3008, 'Title requires minimum 4 and maximum 24 characters.'),
+  INVALID_ROOM_PASSWORD: JsonMessage(false, 3008, 'Password requires minimum 1 character.'),
+  EXISTING_TITLE: JsonMessage(false, 3004, 'A room already exists with that title.'),
+  NOT_EXISTING_USER: JsonMessage(false, 3005, 'There is no user who has that userId.'),
+  NOT_EXISTING_ROOM: JsonMessage(false, 3006, 'There is no room that has that roomId.'),
+
   // 4XXX: Wrong request
   LOGIN_REQUIRED: JsonMessage(false, 4000, 'Must be logged in.'),
   LOGOUT_REQUIRED: JsonMessage(false, 4001, 'Must be logged out'),
   WRONG_PATH: JsonMessage(false, 4004, 'Wrong path.'),
+  USER_IN_ROOM: JsonMessage(false, 4005, 'The user is in the room.'),
+  USER_NOT_IN_ROOM: JsonMessage(false, 4006, 'The user is not in the room.'),
 
-  // 5:XXX Server error
+  // 5:XXX Error
   DB_ERROR: JsonMessage(false, 5000, 'Database Error!'),
   SERVER_ERROR: JsonMessage(false, 5001, 'Server Error!'),
+  EMAIL_REDUNDANCY_ERROR: JsonMessage(false, 5000, 'E-mail redundancy in database!'),
 };
