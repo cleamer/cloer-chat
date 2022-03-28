@@ -29,7 +29,25 @@ const createRoom = async (req, res) => {
   }
 };
 
-const getAllRooms = (req, res) => {};
-const deleteRoom = (req, res) => {};
+const getAllRooms = async (req, res) => {
+  try {
+    const rooms = await roomModel.selectAllRooms().catch((error) => console.error(error));
+    if (rooms === undefined) return res.json(errorMessage(baseMessage.DB_ERROR));
+    return res.json(successMessage(baseMessage.SUCCESS_GET_ALL_ROOMS, { rooms }));
+  } catch (error) {
+    console.error(error);
+    return res.json(errorMessage(baseMessage.SERVER_ERROR));
+  }
+};
+const deleteRoom = async (req, res) => {
+  try {
+    const roomId = parseInt(req.params.roomId);
+    //FIXME:
+    return res.json({ message: 'delete room' });
+  } catch (error) {
+    console.error(error);
+    return res.json(errorMessage(baseMessage.SERVER_ERROR));
+  }
+};
 
 export default { createRoom, getAllRooms, deleteRoom };
