@@ -25,7 +25,7 @@ app.use(
     resave: false,
     saveUninitialized: false,
     secret: process.env.COOKIE_SECRET,
-    store: new FileStore(),
+    store: new FileStore({ logFn: () => {} }),
     cookie: {
       httpOnly: true,
       secure: false,
