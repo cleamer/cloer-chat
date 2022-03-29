@@ -4,7 +4,7 @@ POST http://localhost:3001/api/auth/ HTTP/1.1
 content-type: application/json
 
 {
-  "email": "cloer@gmail.com",
+  "email": "cloer2@gmail.com",
   "password": "Password1!"
 }
 
@@ -24,13 +24,18 @@ content-type: application/json
   "password":"Password1!"
 }
 
+### ✅ delete a user
+### [DELETE] /api/users
+DELETE http://localhost:3001/api/users HTTP/1.1
+content-type: application/json
+
 ### ✅ create a new room
 ### [POST] /api/rooms
 POST http://localhost:3001/api/rooms HTTP/1.1
 content-type: application/json
 
 {
-  "title":"second room!"
+  "title":"RoomId is 5!"
 }
 
 ### ✅ join the room
@@ -40,7 +45,7 @@ content-type: application/json
 
 ### ✅ leave the room
 ### [POST] /api/users/out/:roomId
-GET http://localhost:3001/api/users/out/2 HTTP/1.1
+GET http://localhost:3001/api/users/out/5 HTTP/1.1
 content-type: application/json
 
 ### ✅ get list of total rooms

@@ -4,9 +4,9 @@ const checkEmailExists = async (email) => {
   const connection = await pool.getConnection(async (conn) => conn);
   const [doesEmailExistResult] = await connection.query(
     `
-    SELECT 1
+    SELECT userId, status
     FROM Users 
-    WHERE email = ? AND status = 'a'
+    WHERE email = ?
     ;`,
     [email]
   );
@@ -17,7 +17,7 @@ const checkNicknameExists = async (nickname) => {
   const connection = await pool.getConnection(async (conn) => conn);
   const [doesNicknameExistResult] = await connection.query(
     `
-    SELECT 1 
+    SELECT 1
     FROM Users 
     WHERE nickname = ? AND status = 'a'
     ;`,
@@ -77,5 +77,29 @@ const insertUser = async (email, nickname, password) => {
 
   return insertUserResult;
 };
+const deleteUser = async (userId) => {
+  const connection = await pool.getConnection(async (conn) => conn);
+  const [deleteUserResult] = await connection.query(
+    `
+    UPDATE Users SET status = 'd' WHERE userId = ?
+    ;`,
+    [userId]
+  );
+  connection.release();
 
-export default { checkEmailExists, checkNicknameExists, checkUserIdExists, getUserByEmail, getUserByUserId, insertUser };
+  return deleteUserResult;
+};
+const rejoinUser = async (userId, nickname, password) => {
+  const connection = await pool.getConnection(async (conn) => conn);
+  const [rejoinUserResult] = await connection.query(
+    `
+    UPDATE Users SET nickname = ?, password = ?, status = 'a' WHERE userId = ?
+    ;`,
+    [nickname, password, userId]
+  );
+  connection.release();
+
+  return rejoinUserResult;
+};
+
+export default { checkEmailExists, checkNicknameExists, checkUserIdExists, getUserByEmail, getUserByUserId, insertUser, deleteUser, rejoinUser };

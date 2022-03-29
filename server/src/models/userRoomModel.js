@@ -47,5 +47,16 @@ const deleteUserRoom = async (userRoomId) => {
   connection.release();
   return deleteUserRoomResult;
 };
+const deleteUserRoomByUserId = async (userId) => {
+  const connection = await pool.getConnection(async (conn) => conn);
+  const [deleteUserRoomResult] = await connection.query(
+    `
+    UPDATE Users_Rooms SET status = 'd' WHERE userId = ?
+    ;`,
+    [userId]
+  );
+  connection.release();
+  return deleteUserRoomResult;
+};
 
-export default { checkUserRoomExists, insertUserRoom, activateUserRoom, deleteUserRoom };
+export default { checkUserRoomExists, insertUserRoom, activateUserRoom, deleteUserRoom, deleteUserRoomByUserId };

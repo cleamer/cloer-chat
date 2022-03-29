@@ -12,29 +12,67 @@ const createUser = async (req, res) => {
     if (!UserValidate.nickname(nickname)) return res.json(errorMessage(baseMessage.INVALID_NICKNAME));
     if (!UserValidate.password(password)) return res.json(errorMessage(baseMessage.INVALID_PASSWORD));
 
-    const doesEmailExistPromise = userModel.checkEmailExists(email);
-    const doesNicknameExistPromise = userModel.checkNicknameExists(nickname);
+    const checkEmailExistsPromise = userModel.checkEmailExists(email);
+    const checkNicknameExistsPromise = userModel.checkNicknameExists(nickname);
     const hashedPasswordPromise = bcrypt.hash(password, 12);
 
-    const [doesEmailExist, doesNicknameExist] = await Promise.allSettled([doesEmailExistPromise, doesNicknameExistPromise]);
-    if (doesEmailExist.status === 'rejected') {
-      console.error(doesEmailExist.reason);
+    const [checkEmailExistsResult, checkNicknameExistsResult] = await Promise.allSettled([checkEmailExistsPromise, checkNicknameExistsPromise]);
+    if (checkEmailExistsResult.status === 'rejected') {
+      console.error(checkEmailExistsResult.reason);
       return res.json(errorMessage(baseMessage.DB_ERROR));
     }
-    if (doesNicknameExist.status === 'rejected') {
-      console.error(doesNicknameExist.reason);
+    if (checkNicknameExistsResult.status === 'rejected') {
+      console.error(checkNicknameExistsResult.reason);
       return res.json(errorMessage(baseMessage.DB_ERROR));
     }
-    //TODO: deleted user
-    if (doesEmailExist.value.length) return res.json(errorMessage(baseMessage.EXISTING_EMAIL));
-    if (doesNicknameExist.value.length) return res.json(errorMessage(baseMessage.EXISTING_NICKNAME));
+    const [existingUser] = checkEmailExistsResult.value;
+    const [doesNicknameExist] = checkNicknameExistsResult.value;
+    if (doesNicknameExist) return res.json(errorMessage(baseMessage.EXISTING_NICKNAME));
 
-    // create a new account
     const hashedPassword = await hashedPasswordPromise;
+    if (existingUser) {
+      const { userId, status } = existingUser;
+      if (status === 'a') return res.json(errorMessage(baseMessage.EXISTING_EMAIL));
+      if (status === 'd') {
+        const rejoinUserResult = await userModel.rejoinUser(userId, nickname, hashedPassword).catch((error) => console.error(error));
+        if (rejoinUserResult === undefined) return res.json(errorMessage(baseMessage.DB_ERROR));
+        return res.json(successMessage(baseMessage.SUCCESS_REJOIN_USER, { userId }));
+      }
+    }
     const insertResult = await userModel.insertUser(email, nickname, hashedPassword).catch((error) => console.error(error));
     if (insertResult === undefined) return res.json(errorMessage(baseMessage.DB_ERROR));
     const userId = insertResult.insertId;
     return res.json(successMessage(baseMessage.SUCCESS_INSERT_USER, { userId }));
+  } catch (error) {
+    console.error(error);
+    return res.json(errorMessage(baseMessage.SERVER_ERROR));
+  }
+};
+//TODO: update user info
+const patchUser = async (req, res) => {
+  try {
+    const userId = req.user.userId;
+  } catch (error) {
+    console.error(error);
+    return res.json(errorMessage(baseMessage.SERVER_ERROR));
+  }
+};
+const removeUser = async (req, res) => {
+  try {
+    const userId = req.user.userId;
+    const doesUserIdExist = await userModel.checkUserIdExists(userId).catch((error) => console.log(error));
+    if (doesUserIdExist === undefined) return res.json(errorMessage(baseMessage.DB_ERROR));
+    if (!doesUserIdExist.length) return res.json(errorMessage(baseMessage.NOT_EXISTING_USER));
+
+    const deleteUserRoomResult = await userRoomModel.deleteUserRoomByUserId(userId).catch((error) => console.log(error));
+    if (deleteUserRoomResult === undefined) return res.json(errorMessage(baseMessage.DB_ERROR));
+
+    const deleteUserResult = await userModel.deleteUser(userId).catch((error) => console.log(error));
+    if (deleteUserResult === undefined) return res.json(errorMessage(baseMessage.DB_ERROR));
+
+    // TODO: make a function that checks member count of the room when a user remove or leave the room and broadcast using WS
+
+    return res.json(successMessage(baseMessage.SUCCESS_DELETE_USER, { userId }));
   } catch (error) {
     console.error(error);
     return res.json(errorMessage(baseMessage.SERVER_ERROR));
@@ -125,4 +163,4 @@ const leaveRoom = async (req, res) => {
     return res.json(errorMessage(baseMessage.SERVER_ERROR));
   }
 };
-export default { createUser, joinRoom, leaveRoom };
+export default { createUser, joinRoom, leaveRoom, patchUser, removeUser };

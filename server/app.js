@@ -7,6 +7,7 @@ const FileStore = sessionFileStore(session);
 import cookieParser from 'cookie-parser';
 import morgan from 'morgan';
 import passport from './src/config/passport/index.js';
+import cors from 'cors'; // FIXME:
 
 // import Routers
 import APIrouters from './src/routers/index.js';
@@ -16,6 +17,7 @@ const app = express();
 app.set('port', process.env.PORT || 3001);
 
 // middlewares
+app.use(cors()); //FIXME:
 app.use(morgan('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
