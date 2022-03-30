@@ -2,6 +2,7 @@ import bcrypt from 'bcrypt';
 import { errorMessage, successMessage, baseMessage } from '../../lib/responseMessage.js';
 import { userModel, roomModel, userRoomModel } from '../../models/index.js';
 import { UserValidate } from '../../lib/validate.js';
+import { promiseAllSettled } from '../../lib/promise.js';
 
 const createUser = async (req, res) => {
   try {
@@ -16,17 +17,12 @@ const createUser = async (req, res) => {
     const checkNicknameExistsPromise = userModel.checkNicknameExists(nickname);
     const hashedPasswordPromise = bcrypt.hash(password, 12);
 
-    const [checkEmailExistsResult, checkNicknameExistsResult] = await Promise.allSettled([checkEmailExistsPromise, checkNicknameExistsPromise]);
-    if (checkEmailExistsResult.status === 'rejected') {
-      console.error(checkEmailExistsResult.reason);
+    const { rejected, fulfilled } = await promiseAllSettled([checkEmailExistsPromise, checkNicknameExistsPromise]);
+    if (rejected.length) {
+      rejected.forEach((rejectedResult) => console.error(rejectedResult.reason));
       return res.json(errorMessage(baseMessage.DB_ERROR));
     }
-    if (checkNicknameExistsResult.status === 'rejected') {
-      console.error(checkNicknameExistsResult.reason);
-      return res.json(errorMessage(baseMessage.DB_ERROR));
-    }
-    const [existingUser] = checkEmailExistsResult.value;
-    const [doesNicknameExist] = checkNicknameExistsResult.value;
+    const [[existingUser], [doesNicknameExist]] = fulfilled.map((rejectedResult) => rejectedResult.value);
     if (doesNicknameExist) return res.json(errorMessage(baseMessage.EXISTING_NICKNAME));
 
     const hashedPassword = await hashedPasswordPromise;
@@ -57,6 +53,18 @@ const patchUser = async (req, res) => {
     return res.json(errorMessage(baseMessage.SERVER_ERROR));
   }
 };
+const getActiveUserCount = async (req, res) => {
+  try {
+    const countActiveUser = await userModel.countActiveUser().catch((error) => console.log(error));
+    if (countActiveUser === undefined) return res.json(errorMessage(baseMessage.DB_ERROR));
+    const [{ count }] = countActiveUser;
+    return res.json(successMessage(baseMessage.SUCCESS_GET_USER_COUNT, { count }));
+  } catch (error) {
+    console.error(error);
+    return res.json(errorMessage(baseMessage.SERVER_ERROR));
+  }
+};
+
 const removeUser = async (req, res) => {
   try {
     const userId = req.user.userId;
@@ -163,4 +171,4 @@ const leaveRoom = async (req, res) => {
     return res.json(errorMessage(baseMessage.SERVER_ERROR));
   }
 };
-export default { createUser, joinRoom, leaveRoom, patchUser, removeUser };
+export default { createUser, joinRoom, getActiveUserCount, leaveRoom, patchUser, removeUser };

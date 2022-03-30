@@ -12,6 +12,7 @@ export const baseMessage = {
   SUCCESS_LEAVE_ROOM: JsonMessage(true, 2005, 'It has succeeded to leave the room.'),
   SUCCESS_GET_ALL_ROOMS: JsonMessage(true, 2006, 'It has succeeded to get all rooms.'),
   SUCCESS_REJOIN_USER: JsonMessage(true, 2007, 'It has succeeded to rejoin the user.'),
+  SUCCESS_GET_USER_COUNT: JsonMessage(true, 2008, 'It has succeeded to count users.'),
 
   // 3XXX: Validation error
   INVALID_EMAIL: JsonMessage(false, 3000, 'Wrong or invalid e-mail address.'),

@@ -101,5 +101,18 @@ const rejoinUser = async (userId, nickname, password) => {
 
   return rejoinUserResult;
 };
+const countActiveUser = async () => {
+  const connection = await pool.getConnection(async (conn) => conn);
+  const [countActiveUserResult] = await connection.query(
+    `
+    SELECT count(*) as count
+    FROM Users
+    WHERE status = 'a'
+    ;`
+  );
+  connection.release();
 
-export default { checkEmailExists, checkNicknameExists, checkUserIdExists, getUserByEmail, getUserByUserId, insertUser, deleteUser, rejoinUser };
+  return countActiveUserResult;
+};
+
+export default { checkEmailExists, checkNicknameExists, checkUserIdExists, getUserByEmail, getUserByUserId, insertUser, deleteUser, rejoinUser, countActiveUser };
