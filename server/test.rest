@@ -4,7 +4,7 @@ POST http://localhost:3001/api/auth/ HTTP/1.1
 content-type: application/json
 
 {
-  "email": "cloer2@gmail.com",
+  "email": "cloer@gmail.com",
   "password": "Password1!"
 }
 
@@ -19,8 +19,8 @@ POST http://localhost:3001/api/users HTTP/1.1
 content-type: application/json
 
 {
-  "email":"cloer2@gmail.com",
-  "nickname":"cloer2",
+  "email":"cloer1@gmail.com",
+  "nickname":"cloer",
   "password":"Password1!"
 }
 
@@ -35,7 +35,7 @@ POST http://localhost:3001/api/rooms HTTP/1.1
 content-type: application/json
 
 {
-  "title":"RoomId is 5!"
+  "title":"RoomId is 2!"
 }
 
 ### ✅ join the room

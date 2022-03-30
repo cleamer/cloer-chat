@@ -55,6 +55,7 @@ const selectAllRooms = async () => {
     SELECT roomId, title
     FROM Rooms
     WHERE status = 'a'
+    ORDER BY updatedAt DESC
     ;`
   );
   connection.release();

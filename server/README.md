@@ -70,13 +70,14 @@ a real time web chat api server
 |   HTTP   |  POST  | /auth              | sign in                           |  ✅  |
 |   HTTP   |  GET   | /auth              | sign out                          |  ✅  |
 |   HTTP   |  POST  | /users             | sign up(create a new user)        |  ✅  |
+|   HTTP   |  GET   | /users             | get number of active members      |  ✅  |
 |   HTTP   |  GET   | /users/:userId     | get informations about the user   |  ☑️  |
-|   HTTP   | PATCH  | /users/:userId     | update the user informations      |  ☑️  |
-|   HTTP   | DELETE | /users/:userId     | delete the user account           |  ☑️  |
 |   HTTP   |  GET   | /users/in/:roomId  | the user joins the room           |  ✅  |
 |   HTTP   |  GET   | /users/out/:roomId | the user leaves the room          |  ✅  |
+|   HTTP   | PATCH  | /users/:userId     | update the user informations      |  ☑️  |
+|   HTTP   | DELETE | /users             | delete the user account           |  ✅  |
 |   HTTP   |  POST  | /rooms             | create a new room                 |  ✅  |
-|   HTTP   |  GET   | /rooms             | get all rooms                     |  ☑️  |
+|   HTTP   |  GET   | /rooms             | get all rooms                     |  ✅  |
 |   HTTP   |  GET   | /rooms/:userId     | get all the rooms the user joined |  ☑️  |
 |   HTTP   |  POST  | /chats             | save a new chat                   |  ☑️  |
 |   HTTP   |  GET   | /chats/:roomId     | get chats in the room             |  ☑️  |
