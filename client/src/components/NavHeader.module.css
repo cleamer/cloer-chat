@@ -1,4 +1,4 @@
-.roomHeader {
+.navHeader {
   width: 100%;
   height: 100%;
   display: flex;
@@ -6,6 +6,10 @@
   justify-content: space-between;
   padding: 0 0.8rem;
 }
-.roomHeader a {
+.navHeader a {
   margin-top: 0.4rem;
+}
+.placeholderBox {
+  width: 2rem;
+  height: 2rem;
 }

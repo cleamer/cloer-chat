@@ -2,6 +2,7 @@
   width: 100%;
   height: var(--height-header);
   padding: 10px;
+  background-color: var(--color-background-light-2);
 }
 .nav ul {
   height: 100%;

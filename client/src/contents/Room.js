@@ -1,5 +1,5 @@
 import React from 'react';
-import { Header, MessageList, RoomHeader, RoomInput } from '../components';
+import { Header, MessageList, NavHeader, NavHeaderBack, NavHeaderMenu, RoomInput } from '../components';
 import styles from './Room.module.css';
 import { useParams } from 'react-router-dom';
 
@@ -9,7 +9,7 @@ const Chat = () => {
   return (
     <div className={styles.room}>
       <Header>
-        <RoomHeader title={roomId} />
+        <NavHeader title={roomId} back={<NavHeaderBack to='/chats' />} menu={<NavHeaderMenu to='/' />} />
       </Header>
       <MessageList />
       <RoomInput />

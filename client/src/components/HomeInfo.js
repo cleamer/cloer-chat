@@ -1,11 +1,32 @@
+import { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
+import { useHTTP } from '../hooks/useRequset';
 import styles from './HomeInfo.module.css';
 
 const HomeInfo = () => {
-  const currentUsers = 283;
+  const HTTP = useHTTP();
+  const [userCount, setUserCount] = useState(0);
+  const fetchUserCount = async () => {
+    try {
+      const { data } = await HTTP('get', '/users');
+      console.log(data);
+      if (data.isSuccess) {
+        setUserCount(data.result.count);
+      } else {
+      }
+    } catch (error) {}
+  }; //TODO: error, fail
+
+  useEffect(() => {
+    fetchUserCount();
+  }, []);
+
   return (
     <div className={styles.info}>
-      <span>{`접속자: ${currentUsers}명`}</span>
-      <button>create</button>
+      <span>{`접속자: ${userCount}명`}</span>
+      <Link to='/room/new'>
+        <button className={styles.newBtn}>new</button>
+      </Link>
     </div>
   );
 };
