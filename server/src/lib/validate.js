@@ -25,7 +25,7 @@ const RoomValidate = {
     return true;
   },
   password(password) {
-    if (password === undefined) return true;
+    if (password === null || password === undefined || password === '') return true;
     if (isNotString(password)) return false;
     if (!password.length) return false;
     return true;

@@ -17,7 +17,7 @@ const app = express();
 app.set('port', process.env.PORT || 3001);
 
 // middlewares
-app.use(cors()); //FIXME:
+if (process.env.NODE_ENV !== 'production') app.use(cors({ origin: process.env.CLIENT_URL, credentials: true }));
 app.use(morgan('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
