@@ -1,4 +1,4 @@
-.App {
+.screen {
   width: 100vw;
   height: 100vh;
   display: flex;
@@ -10,5 +10,5 @@
   height: var(--height-frame);
   border-radius: 5px;
   overflow: hidden;
-  background-color: var(--color-background-light-2);
+  background-color: var(--color-background-light-1);
 }

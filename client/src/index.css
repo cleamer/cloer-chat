@@ -6,7 +6,10 @@
   --color-background: #202124;
   --color-background-light-1: #edddc9;
   --color-background-light-2: burlywood;
-  --color-background-coral: coral;
+  --color-background-coral-1: coral;
+  --color-background-coral-2: #ff6431;
+  --color-gray-1: #bdbdbd;
+  --color-gray-2: #5e5e5e;
 }
 
 * {

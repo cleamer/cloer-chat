@@ -9,13 +9,13 @@ const Lobby = () => {
   const headerTitle = pageName ? pageName.charAt(0).toUpperCase() + pageName.slice(1) : 'Home';
 
   return (
-    <div>
+    <>
       <Header title={headerTitle} />
       <main className={styles.main}>
         <Outlet />
       </main>
       <Nav />
-    </div>
+    </>
   );
 };
 

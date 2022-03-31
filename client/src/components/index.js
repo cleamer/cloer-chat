@@ -4,7 +4,10 @@ import RoomList from './RoomList';
 import HomeInfo from './HomeInfo';
 import SignWarningMessage from './SignWarningMessage';
 import MessageList from './MessageList';
-import RoomHeader from './RoomHeader';
+import NavHeader from './NavHeader';
+import NavHeaderBack from './NavHeaderBack';
+import NavHeaderMenu from './NavHeaderMenu';
 import RoomInput from './RoomInput';
+import NewRoom from './NewRoom';
 
-export { Header, Nav, RoomList, HomeInfo, SignWarningMessage, MessageList, RoomHeader, RoomInput };
+export { Header, Nav, RoomList, HomeInfo, SignWarningMessage, MessageList, NavHeader, RoomInput, NewRoom, NavHeaderBack, NavHeaderMenu };
