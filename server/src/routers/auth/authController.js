@@ -12,7 +12,10 @@ const signIn = (req, res, next) => {
   if (!UserValidate.password(password)) return res.json(errorMessage(baseMessage.INVALID_PASSWORD));
 
   passport.authenticate('local', (error, user, loginFailMessage) => {
-    if (error ?? loginFailMessage) return res.json(errorMessage(error ?? loginFailMessage));
+    if (error ?? loginFailMessage) {
+      if (error) console.error(new Error(error?.message));
+      return res.json(errorMessage(error ?? loginFailMessage));
+    }
     return req.login(user, (loginError) => {
       if (loginError) {
         console.error(loginError);
