@@ -8,12 +8,9 @@ const HomeInfo = () => {
   const [userCount, setUserCount] = useState(0);
   const fetchUserCount = async () => {
     try {
-      const { data } = await HTTP('get', '/users');
-      console.log(data);
-      if (data.isSuccess) {
-        setUserCount(data.result.count);
-      } else {
-      }
+      const data = await HTTP('get', '/users');
+      if (data.isSuccess) setUserCount(data.result.count);
+      else setUserCount(0);
     } catch (error) {}
   }; //TODO: error, fail
 

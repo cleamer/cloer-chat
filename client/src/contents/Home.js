@@ -1,4 +1,4 @@
-import { useHTTP } from '../hooks/useRequset';
+import { useHTTP } from '../hooks/useAPI';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { RoomList, HomeInfo } from '../components';
@@ -10,7 +10,6 @@ const Home = () => {
   const fetchRooms = async () => {
     try {
       const data = await HTTP('get', '/rooms');
-      console.log(data);
       if (data.isSuccess) {
         setRoomList(data.result.rooms);
       } else {
