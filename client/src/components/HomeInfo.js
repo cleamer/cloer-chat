@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { useHTTP } from '../hooks/useRequset';
+import { useHTTP } from '../hooks/useAPI';
 import styles from './HomeInfo.module.css';
 
 const HomeInfo = () => {

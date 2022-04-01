@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { useHTTP } from '../hooks/useRequset';
+import { useHTTP } from '../hooks/useAPI';
 import { UserValidate } from '../lib/validate';
 import { useUpdateMessage } from '../contexts/messageContext';
 import styles from './SignInUp.module.css';
@@ -67,6 +67,7 @@ const SignUp = () => {
         placeholder='E-mail'
         autoComplete='off'
         maxLength='64'
+        required
         value={email}
         onChange={emailHandler}
       />
@@ -79,6 +80,7 @@ const SignUp = () => {
         minLength='4'
         maxLength='10'
         value={nickname}
+        required
         onChange={nicknameHandler}
       />
       <input
@@ -88,6 +90,7 @@ const SignUp = () => {
         placeholder='Password'
         autoComplete='new-password'
         minLength='4'
+        required
         value={password}
         onChange={passwordHandler}
       />
@@ -98,6 +101,7 @@ const SignUp = () => {
         placeholder='Confirm Password'
         autoComplete='off'
         minLength='4'
+        required
         value={confirmPassword}
         onChange={confirmPasswordHandler}
       />
