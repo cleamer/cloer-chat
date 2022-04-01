@@ -1,3 +1,5 @@
+import RequireSigIn from './RequireSigIn';
+import RequireSignOut from './RequireSignOut';
 import Header from './Header';
 import Nav from './Nav';
 import RoomList from './RoomList';
@@ -10,4 +12,4 @@ import NavHeaderMenu from './NavHeaderMenu';
 import RoomInput from './RoomInput';
 import NewRoom from './NewRoom';
 
-export { Header, Nav, RoomList, HomeInfo, SignWarningMessage, MessageList, NavHeader, RoomInput, NewRoom, NavHeaderBack, NavHeaderMenu };
+export { RequireSigIn, RequireSignOut, Header, Nav, RoomList, HomeInfo, SignWarningMessage, MessageList, NavHeader, RoomInput, NewRoom, NavHeaderBack, NavHeaderMenu };
