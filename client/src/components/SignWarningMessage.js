@@ -1,9 +1,7 @@
-import { useMessage } from '../contexts/messageContext';
 import styles from './SignWarningMessage.module.css';
 
-const SignWarningMessage = () => {
-  const message = useMessage();
-  return <p className={styles.message}>{message}</p>;
+const SignWarningMessage = ({ errorMessage }) => {
+  return <p className={styles.message}>{errorMessage}</p>;
 };
 
 export default SignWarningMessage;
