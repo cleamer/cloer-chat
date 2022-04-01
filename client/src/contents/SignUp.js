@@ -1,14 +1,13 @@
 import { useState, useEffect, useRef } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useOutletContext } from 'react-router-dom';
 import { useHTTP } from '../hooks/useAPI';
 import { UserValidate } from '../lib/validate';
-import { useUpdateMessage } from '../contexts/messageContext';
 import styles from './SignInUp.module.css';
 
 const SignUp = () => {
-  const updateMessage = useUpdateMessage();
-  const HTTP = useHTTP();
+  const setErrorMessage = useOutletContext();
   const navigate = useNavigate();
+  const HTTP = useHTTP();
 
   const [email, setEmail] = useState('');
   const [nickname, setNickname] = useState('');
@@ -20,7 +19,7 @@ const SignUp = () => {
 
   useEffect(() => {
     emailRef.current.focus();
-    return () => updateMessage('');
+    return () => setErrorMessage('');
   }, []);
 
   useEffect(() => {
@@ -29,25 +28,23 @@ const SignUp = () => {
     isVaildInputsRef.current.password = UserValidate.password(password);
     isVaildInputsRef.current.confirmPassword = password === confirmPassword;
 
-    if (email === '' || nickname === '' || password === '' || confirmPassword === '') updateMessage('');
-    else if (!isVaildInputsRef.current.email) updateMessage('Wrong or invalid e-mail address.');
-    else if (!isVaildInputsRef.current.nickname) updateMessage('Nickname requires minimum 4 and maximum 10 characters.');
-    else if (!isVaildInputsRef.current.password) updateMessage('Password must contain at least 1 lowercase, uppercase, numeric, special character and be a 4 charctors or longer.');
-    else if (!isVaildInputsRef.current.confirmPassword) updateMessage('Not match with password.');
-    else updateMessage('');
-
-    return () => updateMessage('');
+    if (email === '' || nickname === '' || password === '' || confirmPassword === '') setErrorMessage('');
+    else if (!isVaildInputsRef.current.email) setErrorMessage('Wrong or invalid e-mail address.');
+    else if (!isVaildInputsRef.current.nickname) setErrorMessage('Nickname requires minimum 4 and maximum 10 characters.');
+    else if (!isVaildInputsRef.current.password)
+      setErrorMessage('Password must contain at least 1 lowercase, uppercase, numeric, special character and be a 4 charctors or longer.');
+    else if (!isVaildInputsRef.current.confirmPassword) setErrorMessage('Not match with password.');
+    else setErrorMessage('');
   }, [email, nickname, password, confirmPassword]);
 
   const submitHandler = async () => {
     if (isVaildInputsRef.current.email && isVaildInputsRef.current.nickname && isVaildInputsRef.current.password && isVaildInputsRef.current.confirmPassword) {
       try {
-        const response = await HTTP('post', '/users', { email, nickname, password });
-        console.log(response);
-        if (response.isSuccess) return navigate('/sign/in', { replace: true });
-        updateMessage(response.message);
+        const data = await HTTP('post', '/users', { email, nickname, password });
+        if (data.isSuccess) return navigate('/sign/in', { replace: true });
+        setErrorMessage(data.message);
       } catch (error) {
-        updateMessage('Browser Error :(');
+        setErrorMessage('Browser Error :(');
       }
     }
   }; //TODO: fetchRooms(url, setState)

@@ -21,7 +21,8 @@ const signIn = (req, res, next) => {
         console.error(loginError);
         return res.json(errorMessage(baseMessage.SERVER_ERROR));
       }
-      return res.json(successMessage(baseMessage.SUCCESS_SIGNIN));
+      const { userId, email, nickname } = user;
+      return res.json(successMessage(baseMessage.SUCCESS_SIGNIN, { userId, email, nickname }));
     });
   })(req, res, next);
 };
