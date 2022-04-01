@@ -7,14 +7,13 @@ const createRoom = async (req, res) => {
   try {
     const { title, password } = req.body;
     if (!RoomValidate.title(title)) return res.json(errorMessage(baseMessage.INVALID_TITLE));
-    if (!RoomValidate.password(password)) return res.json(errorMessage(baseMessage));
+    if (!RoomValidate.password(password)) return res.json(errorMessage(baseMessage.INVALID_ROOM_PASSWORD));
 
     const doesTitleExist = await roomModel.checkTitleExists(title);
     if (doesTitleExist.length) return res.json(errorMessage(baseMessage.EXISTING_TITLE));
     let hashedPassword = null;
     if (password !== undefined || password !== null || password !== '') hashedPassword = await bcrypt.hash(password, 12);
 
-    // FIXME: create a room that has the same title as a deleted room's
     const insertRoomResult = await roomModel.insertRoom(title, hashedPassword).catch((error) => console.error(error));
     if (insertRoomResult === undefined) return res.json(errorMessage(baseMessage.DB_ERROR));
 
