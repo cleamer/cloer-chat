@@ -1,13 +1,14 @@
+import { useNavigate } from 'react-router-dom';
 import styles from './RoomRow.module.css';
 
-const RoomRow = ({ room: { roomId, title, members } }) => {
-  const onClick = () => {
-    console.log(roomId);
-  };
+const RoomRow = ({ room: { roomId, title, currentMemberCount = 10, maxMemberCount = 50 } }) => {
+  //TODO: total member count
+  const navigate = useNavigate();
+  const onClick = () => navigate(`/room/${roomId}`, { state: { title } });
   return (
     <li className={styles.row} onClick={() => onClick()}>
       <span>{title}</span>
-      <span>{`${members}/50`}</span>
+      <span>{`${currentMemberCount}/${maxMemberCount}`}</span>
     </li>
   );
 };

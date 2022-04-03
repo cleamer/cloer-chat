@@ -12,4 +12,5 @@
 }
 .row:hover {
   transform: scaleY(1.1) scaleX(1.02);
+  cursor: pointer;
 }
