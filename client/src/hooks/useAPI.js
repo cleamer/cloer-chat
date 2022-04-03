@@ -14,16 +14,18 @@ export const useHTTP = () => {
       const { data } = await apiServer[method](...args);
       console.log(data);
 
+      // TODO: common validation of response
       if (data.code === 4000) {
-        // must be signed in
+        // must be logged in
         const message = data.message;
-        console.log('redirect');
+        console.log('request: must be logged in');
         return navigate('/sign/in', { state: { message } });
       }
       return data;
     } catch (error) {
       console.log('request: error!');
-      return { isSuccess: false, code: 6000, message: 'API Server connection error.' };
+      // return { isSuccess: false, code: 6000, message: 'API Server connection error.' };
+      return navigate('/sign/in', { state: { message: 'API Server connection error.' } });
     }
   };
 };
