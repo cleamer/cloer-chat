@@ -1,17 +1,17 @@
 import { useState } from 'react';
 import { Outlet } from 'react-router-dom';
-import { SignWarningMessage } from '../components';
+import { WarningMessage } from '../components';
 import styles from './Sign.module.css';
 
 const Sign = () => {
   console.log('Sign');
-  const [errorMessage, setErrorMessage] = useState('');
+  const [warningMessage, setWarningMessage] = useState();
   const submitHandler = async (e) => e.preventDefault();
 
   return (
     <form className={styles.signBox} onSubmit={submitHandler}>
-      {errorMessage ? <SignWarningMessage errorMessage={errorMessage} /> : null}
-      <Outlet context={setErrorMessage} />
+      {warningMessage ? <WarningMessage warningMessage={warningMessage} /> : null}
+      <Outlet context={setWarningMessage} />
     </form>
   );
 };
