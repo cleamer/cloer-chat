@@ -1,13 +1,14 @@
 import { useState, useEffect, useRef } from 'react';
-import { Link, useNavigate, useOutletContext } from 'react-router-dom';
-import { useUser } from '../contexts/userContext';
+import { Link, useLocation, useNavigate, useOutletContext } from 'react-router-dom';
+import { useUser } from '../contexts/userContext'; //FIXME:
 import { useHTTP } from '../hooks/useAPI';
 import { UserValidate } from '../lib/validate';
 import styles from './SignInUp.module.css';
 
 const SignIn = () => {
   const navigate = useNavigate();
-  const setErrorMessage = useOutletContext();
+  const laocation = useLocation();
+  const setWarningMessage = useOutletContext();
   const HTTP = useHTTP();
   const { setUser } = useUser();
 
@@ -19,18 +20,22 @@ const SignIn = () => {
 
   useEffect(() => {
     emailRef.current.focus();
-    return () => setErrorMessage('');
+    return () => setWarningMessage('');
   }, []);
 
   useEffect(() => {
     isVaildInputsRef.current.email = UserValidate.email(email);
     isVaildInputsRef.current.password = UserValidate.password(password);
 
-    if (email === '' || password === '') setErrorMessage('');
-    else if (!isVaildInputsRef.current.email) setErrorMessage('Wrong or invalid e-mail address.');
+    if (email === '' || password === '') {
+      if (laocation.state) {
+        setWarningMessage(laocation.state.message);
+        laocation.state = null;
+      } else setWarningMessage('');
+    } else if (!isVaildInputsRef.current.email) setWarningMessage('Wrong or invalid e-mail address.');
     else if (!isVaildInputsRef.current.password)
-      setErrorMessage('Password must contain at least 1 lowercase, uppercase, numeric, special character and be a 4 charctors or longer.');
-    else setErrorMessage('');
+      setWarningMessage('Password must contain at least 1 lowercase, uppercase, numeric, special character and be a 4 charctors or longer.');
+    else setWarningMessage('');
   }, [email, password]);
 
   const submitHandler = async () => {
@@ -42,10 +47,10 @@ const SignIn = () => {
           setUser(userInfo);
           return navigate('/', { replace: true });
         }
-        setErrorMessage(data.message);
+        setWarningMessage(data.message);
       } catch (error) {
         console.log(error);
-        setErrorMessage('Browser Error :(');
+        setWarningMessage('Browser Error :(');
       }
     }
   }; //TODO: fetchRooms(url, setState)

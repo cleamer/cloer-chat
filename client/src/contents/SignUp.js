@@ -5,7 +5,7 @@ import { UserValidate } from '../lib/validate';
 import styles from './SignInUp.module.css';
 
 const SignUp = () => {
-  const setErrorMessage = useOutletContext();
+  const setWarningMessage = useOutletContext();
   const navigate = useNavigate();
   const HTTP = useHTTP();
 
@@ -19,7 +19,7 @@ const SignUp = () => {
 
   useEffect(() => {
     emailRef.current.focus();
-    return () => setErrorMessage('');
+    return () => setWarningMessage('');
   }, []);
 
   useEffect(() => {
@@ -28,13 +28,13 @@ const SignUp = () => {
     isVaildInputsRef.current.password = UserValidate.password(password);
     isVaildInputsRef.current.confirmPassword = password === confirmPassword;
 
-    if (email === '' || nickname === '' || password === '' || confirmPassword === '') setErrorMessage('');
-    else if (!isVaildInputsRef.current.email) setErrorMessage('Wrong or invalid e-mail address.');
-    else if (!isVaildInputsRef.current.nickname) setErrorMessage('Nickname requires minimum 4 and maximum 10 characters.');
+    if (email === '' || nickname === '' || password === '' || confirmPassword === '') setWarningMessage('');
+    else if (!isVaildInputsRef.current.email) setWarningMessage('Wrong or invalid e-mail address.');
+    else if (!isVaildInputsRef.current.nickname) setWarningMessage('Nickname requires minimum 4 and maximum 10 characters.');
     else if (!isVaildInputsRef.current.password)
-      setErrorMessage('Password must contain at least 1 lowercase, uppercase, numeric, special character and be a 4 charctors or longer.');
-    else if (!isVaildInputsRef.current.confirmPassword) setErrorMessage('Not match with password.');
-    else setErrorMessage('');
+      setWarningMessage('Password must contain at least 1 lowercase, uppercase, numeric, special character and be a 4 charctors or longer.');
+    else if (!isVaildInputsRef.current.confirmPassword) setWarningMessage('Not match with password.');
+    else setWarningMessage('');
   }, [email, nickname, password, confirmPassword]);
 
   const submitHandler = async () => {
@@ -42,9 +42,10 @@ const SignUp = () => {
       try {
         const data = await HTTP('post', '/users', { email, nickname, password });
         if (data.isSuccess) return navigate('/sign/in', { replace: true });
-        setErrorMessage(data.message);
+        setWarningMessage(data.message);
       } catch (error) {
-        setErrorMessage('Browser Error :(');
+        console.log(error);
+        setWarningMessage('Browser Error :(');
       }
     }
   }; //TODO: fetchRooms(url, setState)
