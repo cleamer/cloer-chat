@@ -6,8 +6,11 @@
   justify-content: space-between;
   padding: 0 0.8rem;
 }
-.navHeader a {
+.navHeader svg {
   margin-top: 0.4rem;
+}
+.navHeader svg:hover {
+  cursor: pointer;
 }
 .placeholderBox {
   width: 2rem;

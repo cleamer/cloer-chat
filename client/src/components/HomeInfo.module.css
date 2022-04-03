@@ -17,4 +17,5 @@
 }
 .newBtn:hover {
   transform: scale(0.95, 0.9);
+  cursor: pointer;
 }
