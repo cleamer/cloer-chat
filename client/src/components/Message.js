@@ -1,7 +1,8 @@
 import React from 'react';
 import styles from './Message.module.css';
 
-const Message = ({ data: { nickname, message, updatedAt }, fromMe, consecutive }) => {
+const Message = ({ data: { nickname, message, updatedAt }, consecutive }) => {
+  const fromMe = nickname === 'cloer1';
   return (
     <div className={`${styles.chatBox} ${fromMe ? styles.fromMe : ''}`}>
       {consecutive || fromMe ? '' : <span className={styles.nickname}>{nickname}</span>}

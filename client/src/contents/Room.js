@@ -1,20 +1,68 @@
-import React from 'react';
+import React, { useState, useReducer, useEffect } from 'react';
+import { useParams, useLocation } from 'react-router-dom';
 import { Header, MessageList, NavHeader, NavHeaderBack, NavHeaderMenu, RoomInput } from '../components';
 import styles from './Room.module.css';
-import { useParams } from 'react-router-dom';
 
-const Chat = () => {
+const MESSAGES_ACTION_TYPES = {
+  LOAD: 'load',
+  ADD: 'add',
+};
+
+const messageReducer = (messages, action) => {
+  switch (action.type) {
+    case MESSAGES_ACTION_TYPES.LOAD:
+      const loadedMessages = [];
+      const messageNum = 100;
+      for (let i = 0; i < messageNum; i++) {
+        loadedMessages.push({
+          nickname: `cloer${i % 7}`,
+          message:
+            i % 3
+              ? '짧은 문장'
+              : '장문장문장문장문장문장문장문장문장문장문장문장문장문장문장문장문장문장문장문장문장문장문장문장문장문장문장문장문장문장문장문장문장문장문장문장문장문장문장문장문장문장문장문장문장문장문장문장문장문장문장문장문장문장문장문장문장문장문장문장문장문장문장문장문장문장문장문장문장문장문',
+          updatedAt: `${Math.floor((messageNum - i) / 60)}:${(messageNum - i) % 60}`,
+        });
+      }
+      return loadedMessages;
+
+    case MESSAGES_ACTION_TYPES.ADD:
+      console.log(action);
+      const newMassage = action.payload.message;
+      return [newMassage, ...messages];
+
+    default:
+      return messages;
+  }
+};
+
+const MemoHeader = React.memo(({ title }) => (
+  <Header>
+    <NavHeader title={title} back={<NavHeaderBack to='/chats' />} menu={<NavHeaderMenu to='/' />} />
+  </Header>
+));
+const MemoRoomInput = React.memo(({ messageDispatch }) => <RoomInput messageDispatch={messageDispatch} actions={MESSAGES_ACTION_TYPES} />);
+
+const Room = () => {
+  console.log('Room');
   const { roomId } = useParams();
+  const location = useLocation();
+  const titleInit = location.state?.title || 'get title from server by http'; //TODO:
+  const [title, setTitle] = useState(titleInit);
+  const [messages, messageDispatch] = useReducer(messageReducer, []);
+
+  //TODO: if change title, get title using WS and call setTitle function
+
+  useEffect(() => {
+    messageDispatch({ type: MESSAGES_ACTION_TYPES.LOAD });
+  }, []);
 
   return (
     <div className={styles.room}>
-      <Header>
-        <NavHeader title={roomId} back={<NavHeaderBack to='/chats' />} menu={<NavHeaderMenu to='/' />} />
-      </Header>
-      <MessageList />
-      <RoomInput />
+      <MemoHeader title={title} />
+      <MessageList messages={messages} />
+      <MemoRoomInput messageDispatch={messageDispatch} />
     </div>
   );
 };
 
-export default Chat;
+export default Room;
