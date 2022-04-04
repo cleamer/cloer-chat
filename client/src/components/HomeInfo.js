@@ -4,18 +4,23 @@ import { useHTTP } from '../hooks/useAPI';
 import styles from './HomeInfo.module.css';
 
 const HomeInfo = () => {
-  const HTTP = useHTTP();
+  const [cancelHTTP, HTTP] = useHTTP();
   const [userCount, setUserCount] = useState(0);
-  const fetchUserCount = async () => {
-    try {
-      const data = await HTTP('get', '/users');
-      if (data.isSuccess) setUserCount(data.result.count);
-      else setUserCount(0);
-    } catch (error) {}
-  }; //TODO: error, fail
-
   useEffect(() => {
-    fetchUserCount();
+    (async () => {
+      try {
+        const response = await HTTP('get', '/users');
+        if (!response.isData) return console.log(`get /users canceled: ${response.message}`);
+        if (response.isSuccess) setUserCount(response.result.count);
+        else setUserCount(0);
+      } catch (error) {
+        //TODO: error, fail
+        console.log('[GET] /users: rejected');
+        console.error(error);
+      }
+    })();
+
+    return () => cancelHTTP.cancel('unmount');
   }, []);
 
   return (

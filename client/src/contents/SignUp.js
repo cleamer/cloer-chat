@@ -7,7 +7,7 @@ import styles from './SignInUp.module.css';
 const SignUp = () => {
   const setWarningMessage = useOutletContext();
   const navigate = useNavigate();
-  const HTTP = useHTTP();
+  const [cancelHTTP, HTTP] = useHTTP();
 
   const [email, setEmail] = useState('');
   const [nickname, setNickname] = useState('');
@@ -19,7 +19,10 @@ const SignUp = () => {
 
   useEffect(() => {
     emailRef.current.focus();
-    return () => setWarningMessage('');
+    return () => {
+      cancelHTTP.cancel('unmount');
+      setWarningMessage('');
+    };
   }, []);
 
   useEffect(() => {
@@ -40,9 +43,10 @@ const SignUp = () => {
   const submitHandler = async () => {
     if (isVaildInputsRef.current.email && isVaildInputsRef.current.nickname && isVaildInputsRef.current.password && isVaildInputsRef.current.confirmPassword) {
       try {
-        const data = await HTTP('post', '/users', { email, nickname, password });
-        if (data.isSuccess) return navigate('/sign/in', { replace: true });
-        setWarningMessage(data.message);
+        const response = await HTTP('post', '/users', { email, nickname, password });
+        if (!response.isData) return console.log(`get /rooms canceled: ${response.message}`);
+        if (response.isSuccess) return navigate('/sign/in', { replace: true });
+        setWarningMessage(response.message);
       } catch (error) {
         console.log(error);
         setWarningMessage('Browser Error :(');

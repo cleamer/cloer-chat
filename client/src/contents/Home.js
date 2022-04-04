@@ -5,22 +5,26 @@ import { RoomList, HomeInfo } from '../components';
 
 const Home = () => {
   const navigate = useNavigate();
-  const HTTP = useHTTP();
+  const [cancelHTTP, HTTP] = useHTTP();
   const [roomList, setRoomList] = useState([]); // FIXME: dummy -> []
-  const fetchRooms = async () => {
-    try {
-      const data = await HTTP('get', '/rooms');
-      if (data.isSuccess) {
-        setRoomList(data.result.rooms);
-      } else {
-        const message = data.message;
-        navigate('/sign/in', { state: { message } });
-      }
-    } catch (error) {}
-  }; //TODO: fetchRooms(url, setState)
-
   useEffect(() => {
-    fetchRooms();
+    (async () => {
+      try {
+        const response = await HTTP('get', '/rooms');
+        if (!response.isData) return console.log(`GET /rooms canceled: ${response.message}`);
+        if (response.isSuccess) {
+          setRoomList(response.result.rooms);
+        } else {
+          const message = response.message;
+          navigate('/sign/in', { state: { message } });
+        }
+      } catch (error) {
+        console.log('[GET] /rooms: rejected');
+        console.error(error);
+      }
+    })();
+
+    return () => cancelHTTP.cancel('unmount');
   }, []);
 
   return (

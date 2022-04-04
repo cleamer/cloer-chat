@@ -9,7 +9,7 @@ const SignIn = () => {
   const navigate = useNavigate();
   const laocation = useLocation();
   const setWarningMessage = useOutletContext();
-  const HTTP = useHTTP();
+  const [cancelHTTP, HTTP] = useHTTP();
   const { setUser } = useUser();
 
   const [email, setEmail] = useState('');
@@ -20,7 +20,10 @@ const SignIn = () => {
 
   useEffect(() => {
     emailRef.current.focus();
-    return () => setWarningMessage('');
+    return () => {
+      cancelHTTP.cancel('unmount');
+      setWarningMessage('');
+    };
   }, []);
 
   useEffect(() => {
@@ -41,13 +44,14 @@ const SignIn = () => {
   const submitHandler = async () => {
     if (isVaildInputsRef.current.email && isVaildInputsRef.current.password) {
       try {
-        const data = await HTTP('post', '/auth', { email, password });
-        if (data.isSuccess) {
-          const userInfo = data.result;
+        const response = await HTTP('post', '/auth', { email, password });
+        if (!response.isData) return console.log(`POST /auth canceled: ${response.message}`);
+        if (response.isSuccess) {
+          const userInfo = response.result;
           setUser(userInfo);
           return navigate('/', { replace: true });
         }
-        setWarningMessage(data.message);
+        setWarningMessage(response.message);
       } catch (error) {
         console.log(error);
         setWarningMessage('Browser Error :(');
