@@ -7,7 +7,7 @@ const RESPONSE = {
 };
 
 const apiServer = axios.create({
-  baseURL: process.env.REACT_APP_API_URL,
+  baseURL: `${process.env.REACT_APP_API_URL}/api`,
   withCredentials: process.env.REACT_APP_ENV !== 'production',
   headers: { 'content-type': 'application/json' },
 });

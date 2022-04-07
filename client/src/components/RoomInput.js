@@ -1,15 +1,18 @@
-import { useRef, useState } from 'react';
+import { EVENTS } from '../lib/webSocket';
+import { useRef } from 'react';
 import styles from './RoomInput.module.css';
 
-const RoomInput = ({ messageDispatch, actions }) => {
+const RoomInput = ({ roomId, messageDispatch, actionTypes, socket }) => {
   console.log('RoomInput');
   const userNickname = 'cloer1'; // TODO: JWT / localStorage / session storage /user context
   const inputRef = useRef(null);
   const buttonRef = useRef(null);
+
   const sendHandler = () => {
     console.log('send the message');
     const message = { nickname: userNickname, message: inputRef.current.value, updatedAt: Date.now() };
-    messageDispatch({ type: actions.ADD, payload: { message } });
+    messageDispatch({ type: actionTypes.ADD, payload: { message } });
+    socket.emit(EVENTS.CLIENT__SEND_MESSAGE, roomId, message);
     inputRef.current.value = '';
   };
 

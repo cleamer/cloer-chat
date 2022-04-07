@@ -39,9 +39,10 @@ export const baseMessage = {
   WRONG_PATH: JsonMessage(false, 4004, 'Wrong path.'),
   USER_IN_ROOM: JsonMessage(false, 4005, 'The user is in the room.'),
   USER_NOT_IN_ROOM: JsonMessage(false, 4006, 'The user is not in the room.'),
+  // EXPIRED_TOKEN: JsonMessage(false, 4007, 'Token is expired.'),
+  // INVALID_TOKEN: JsonMessage(false, 4007, 'Token is invalid.'),
 
   // 5:XXX Error
   DB_ERROR: JsonMessage(false, 5000, 'Database Error!'),
   SERVER_ERROR: JsonMessage(false, 5001, 'Server Error!'),
-  EMAIL_REDUNDANCY_ERROR: JsonMessage(false, 5000, 'E-mail redundancy in database!'),
 };

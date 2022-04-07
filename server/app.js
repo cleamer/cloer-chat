@@ -7,6 +7,7 @@ const FileStore = sessionFileStore(session);
 import cookieParser from 'cookie-parser';
 import morgan from 'morgan';
 import passport from './src/config/passport/index.js';
+import webSocketInit from './src/sockets/index.js';
 import cors from 'cors'; // FIXME:
 
 // import Routers
@@ -17,7 +18,7 @@ const app = express();
 app.set('port', process.env.PORT || 3001);
 
 // middlewares
-if (process.env.NODE_ENV !== 'production') app.use(cors({ origin: process.env.CLIENT_URL, credentials: true }));
+if (process.env.NODE_ENV !== 'production') app.use(cors({ origin: process.env.CLIENT_URL, credentials: true })); // FIXME:
 app.use(morgan('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
@@ -49,3 +50,4 @@ app.use((err, req, res, next) => {
 });
 
 const expressServer = app.listen(app.get('port'), () => console.log(`cloer chat server is running on port ${app.get('port')}`));
+webSocketInit(expressServer, app);

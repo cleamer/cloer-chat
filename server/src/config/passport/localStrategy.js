@@ -15,10 +15,8 @@ export default () => {
         // TODO: deal with deleted user
         const activeUser = getUserByEmailResult.filter((user) => user.status === 'a');
         if (!activeUser.length) return done(null, false, baseMessage.CANNOT_FIND_EMAIL);
-        if (activeUser.length > 1) return done(baseMessage.EMAIL_REDUNDANCY_ERROR);
 
         const [user] = activeUser;
-
         const isPasswordCorrect = await bcrypt.compare(password, user.password);
         if (!isPasswordCorrect) return done(null, false, baseMessage.INCORRECT_PASSWORD);
         return done(null, user);

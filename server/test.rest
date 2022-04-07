@@ -5,7 +5,7 @@ content-type: application/json
 
 {
   "email": "cloer@gmail.com",
-  "password": "Password1!"
+  "password": "aA1!"
 }
 
 ### ✅ sign out 
