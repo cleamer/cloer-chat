@@ -1,26 +1,26 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { useHTTP } from '../hooks/useAPI';
+import { socketConnector, EVENTS } from '../lib/webSocket';
 import styles from './HomeInfo.module.css';
 
+const usersSocket = socketConnector('/users');
+const roomsSocket = socketConnector('/rooms');
+
 const HomeInfo = () => {
-  const [cancelHTTP, HTTP] = useHTTP();
   const [userCount, setUserCount] = useState(0);
   useEffect(() => {
-    (async () => {
-      try {
-        const response = await HTTP('get', '/users');
-        if (!response.isData) return console.log(`get /users canceled: ${response.message}`);
-        if (response.isSuccess) setUserCount(response.result.count);
-        else setUserCount(0);
-      } catch (error) {
-        //TODO: error, fail
-        console.log('[GET] /users: rejected');
-        console.error(error);
-      }
-    })();
+    usersSocket.connect();
+    roomsSocket.connect();
 
-    return () => cancelHTTP.cancel('unmount');
+    usersSocket.emit(EVENTS.CLIENT__HOME);
+    usersSocket.on(EVENTS.SERVER__HOME, (count) => setUserCount(count));
+    //TODO: socket get signed in users
+
+    return () => {
+      setUserCount(0);
+      usersSocket.disconnect();
+      roomsSocket.disconnect();
+    };
   }, []);
 
   return (

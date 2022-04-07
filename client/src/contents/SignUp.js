@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import { Link, useNavigate, useOutletContext } from 'react-router-dom';
+import { useAuth } from '../contexts/authContext';
 import { useHTTP } from '../hooks/useAPI';
 import { UserValidate } from '../lib/validate';
 import styles from './SignInUp.module.css';
@@ -7,6 +8,7 @@ import styles from './SignInUp.module.css';
 const SignUp = () => {
   const setWarningMessage = useOutletContext();
   const navigate = useNavigate();
+  const { authMessage, setAuthMessage } = useAuth();
   const [cancelHTTP, HTTP] = useHTTP();
 
   const [email, setEmail] = useState('');
@@ -24,6 +26,13 @@ const SignUp = () => {
       setWarningMessage('');
     };
   }, []);
+
+  useEffect(() => {
+    if (authMessage) {
+      setWarningMessage(authMessage);
+      setAuthMessage('');
+    }
+  }, [authMessage]);
 
   useEffect(() => {
     isVaildInputsRef.current.email = UserValidate.email(email);
@@ -44,7 +53,7 @@ const SignUp = () => {
     if (isVaildInputsRef.current.email && isVaildInputsRef.current.nickname && isVaildInputsRef.current.password && isVaildInputsRef.current.confirmPassword) {
       try {
         const response = await HTTP('post', '/users', { email, nickname, password });
-        if (!response.isData) return console.log(`get /rooms canceled: ${response.message}`);
+        if (response.isError) return console.log(`[GET] /rooms fail: ${response.message}`);
         if (response.isSuccess) return navigate('/sign/in', { replace: true });
         setWarningMessage(response.message);
       } catch (error) {

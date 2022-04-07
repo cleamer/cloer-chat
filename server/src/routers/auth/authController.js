@@ -22,7 +22,7 @@ const signIn = (req, res, next) => {
         return res.json(errorMessage(baseMessage.SERVER_ERROR));
       }
       const { userId, email, nickname } = user;
-      return res.json(successMessage(baseMessage.SUCCESS_SIGNIN, { userId, email, nickname }));
+      return res.json(successMessage(baseMessage.SUCCESS_SIGNIN, { userInfo: { userId, email, nickname } }));
     });
   })(req, res, next);
 };

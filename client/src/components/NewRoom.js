@@ -35,12 +35,13 @@ const NewRoom = () => {
     e.preventDefault();
     if (isVaildInputsRef.current.title && isVaildInputsRef.current.password) {
       try {
-        const data = await HTTP('post', '/rooms', { title, password });
-        if (data.isSuccess) {
-          const roomId = data.result.roomId;
+        const response = await HTTP('post', '/rooms', { title, password });
+        if (response.isError) return console.log(`[POST] /auth fail: ${response.message}`);
+        if (response.isSuccess) {
+          const roomId = response.result.roomId;
           return navigate(`/room/${roomId}`, { replace: true });
         }
-        setWarningMessage(data.message);
+        setWarningMessage(response.message);
       } catch (error) {
         console.log(error);
         setWarningMessage('Browser Error :(');

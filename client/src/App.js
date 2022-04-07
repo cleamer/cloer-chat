@@ -2,7 +2,7 @@ import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { Lobby, Sign } from './layouts';
 import { Home, Room, SignIn, SignUp } from './contents';
 import { RequireSigIn, RequireSignOut, NewRoom } from './components';
-import UserProvider from './contexts/userContext';
+import AuthProvider from './contexts/authContext';
 import styles from './App.module.css';
 
 function App() {
@@ -10,7 +10,7 @@ function App() {
     <div className={styles.screen}>
       <div className={styles.frame}>
         <BrowserRouter>
-          <UserProvider value={null}>
+          <AuthProvider>
             <Routes>
               <Route path='/'>
                 <Route element={<RequireSigIn />}>
@@ -35,7 +35,7 @@ function App() {
                 </Route>
               </Route>
             </Routes>
-          </UserProvider>
+          </AuthProvider>
         </BrowserRouter>
       </div>
     </div>

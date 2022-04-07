@@ -53,16 +53,9 @@ const patchUser = async (req, res) => {
     return res.json(errorMessage(baseMessage.SERVER_ERROR));
   }
 };
-const getActiveUserCount = async (req, res) => {
-  try {
-    const countActiveUser = await userModel.countActiveUser().catch((error) => console.log(error));
-    if (countActiveUser === undefined) return res.json(errorMessage(baseMessage.DB_ERROR));
-    const [{ count }] = countActiveUser;
-    return res.json(successMessage(baseMessage.SUCCESS_GET_USER_COUNT, { count }));
-  } catch (error) {
-    console.error(error);
-    return res.json(errorMessage(baseMessage.SERVER_ERROR));
-  }
+const getUserInfo = async (req, res) => {
+  const userInfo = req.user;
+  res.json(successMessage(baseMessage.SUCCESS_GET_USER_INFO, { userInfo }));
 };
 
 const removeUser = async (req, res) => {
@@ -171,4 +164,4 @@ const leaveRoom = async (req, res) => {
     return res.json(errorMessage(baseMessage.SERVER_ERROR));
   }
 };
-export default { createUser, joinRoom, getActiveUserCount, leaveRoom, patchUser, removeUser };
+export default { createUser, joinRoom, getUserInfo, leaveRoom, patchUser, removeUser };

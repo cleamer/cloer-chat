@@ -1,16 +1,15 @@
 import { useState, useEffect, useRef } from 'react';
-import { Link, useLocation, useNavigate, useOutletContext } from 'react-router-dom';
-import { useUser } from '../contexts/userContext'; //FIXME:
+import { Link, useNavigate, useOutletContext } from 'react-router-dom';
+import { useAuth } from '../contexts/authContext';
 import { useHTTP } from '../hooks/useAPI';
 import { UserValidate } from '../lib/validate';
 import styles from './SignInUp.module.css';
 
 const SignIn = () => {
   const navigate = useNavigate();
-  const laocation = useLocation();
   const setWarningMessage = useOutletContext();
+  const { setUser, authMessage, setAuthMessage } = useAuth();
   const [cancelHTTP, HTTP] = useHTTP();
-  const { setUser } = useUser();
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -27,15 +26,18 @@ const SignIn = () => {
   }, []);
 
   useEffect(() => {
+    if (authMessage) {
+      setWarningMessage(authMessage);
+      setAuthMessage('');
+    }
+  }, [authMessage]);
+
+  useEffect(() => {
     isVaildInputsRef.current.email = UserValidate.email(email);
     isVaildInputsRef.current.password = UserValidate.password(password);
 
-    if (email === '' || password === '') {
-      if (laocation.state) {
-        setWarningMessage(laocation.state.message);
-        laocation.state = null;
-      } else setWarningMessage('');
-    } else if (!isVaildInputsRef.current.email) setWarningMessage('Wrong or invalid e-mail address.');
+    if (email === '' || password === '') setWarningMessage('');
+    else if (!isVaildInputsRef.current.email) setWarningMessage('Wrong or invalid e-mail address.');
     else if (!isVaildInputsRef.current.password)
       setWarningMessage('Password must contain at least 1 lowercase, uppercase, numeric, special character and be a 4 charctors or longer.');
     else setWarningMessage('');
@@ -45,9 +47,9 @@ const SignIn = () => {
     if (isVaildInputsRef.current.email && isVaildInputsRef.current.password) {
       try {
         const response = await HTTP('post', '/auth', { email, password });
-        if (!response.isData) return console.log(`POST /auth canceled: ${response.message}`);
-        if (response.isSuccess) {
-          const userInfo = response.result;
+        if (response.isError) setUser(null);
+        else if (response.isSuccess) {
+          const userInfo = response.result.userInfo;
           setUser(userInfo);
           return navigate('/', { replace: true });
         }

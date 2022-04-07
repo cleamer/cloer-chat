@@ -1,13 +1,11 @@
-import { useLocation, Navigate, Outlet } from 'react-router-dom';
-import { useUser } from '../contexts/userContext';
+import { Navigate, Outlet } from 'react-router-dom';
+import { useAuth } from '../contexts/authContext';
 
 const RequireSigIn = () => {
-  const { user } = useUser();
-  const location = useLocation();
+  const { user } = useAuth();
+  console.log('req in ', user);
 
-  return <Outlet />;
-  // FIXME: when reflash or go the url by path, set user null
-  // return user === null ? <Navigate to='/sign/in' state={{ from: location }} replace /> : <Outlet />;
+  return user === null ? <Navigate to='/sign/in' replace /> : <Outlet />;
 };
 
 export default RequireSigIn;

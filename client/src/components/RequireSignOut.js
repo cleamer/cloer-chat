@@ -1,13 +1,10 @@
-import { useLocation, Navigate, Outlet } from 'react-router-dom';
-import { useUser } from '../contexts/userContext';
+import { Navigate, Outlet } from 'react-router-dom';
+import { useAuth } from '../contexts/authContext';
 
 const RequireSignOut = () => {
-  const { user } = useUser();
-  const location = useLocation();
+  const { user } = useAuth();
 
-  return <Outlet />;
-  // FIXME: when reflash or go the url by path, set user null
-  // return user === null ? <Outlet /> : <Navigate to='/' state={{ from: location }} replace />;
+  return user === null ? <Outlet /> : <Navigate to='/' replace />;
 };
 
 export default RequireSignOut;

@@ -1,25 +1,19 @@
 import { useHTTP } from '../hooks/useAPI';
 import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { RoomList, HomeInfo } from '../components';
+import { useAuth } from '../contexts/authContext';
 
 const Home = () => {
-  const navigate = useNavigate();
+  const { setUser } = useAuth();
   const [cancelHTTP, HTTP] = useHTTP();
-  const [roomList, setRoomList] = useState([]); // FIXME: dummy -> []
+  const [roomList, setRoomList] = useState([]);
   useEffect(() => {
     (async () => {
       try {
         const response = await HTTP('get', '/rooms');
-        if (!response.isData) return console.log(`GET /rooms canceled: ${response.message}`);
-        if (response.isSuccess) {
-          setRoomList(response.result.rooms);
-        } else {
-          const message = response.message;
-          navigate('/sign/in', { state: { message } });
-        }
+        if (response.isError) return setUser(null);
+        if (response.isSuccess) return setRoomList(response.result.rooms);
       } catch (error) {
-        console.log('[GET] /rooms: rejected');
         console.error(error);
       }
     })();
