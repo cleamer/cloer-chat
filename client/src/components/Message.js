@@ -1,8 +1,11 @@
 import React from 'react';
+import { useAuth } from '../contexts/authContext';
 import styles from './Message.module.css';
 
 const Message = ({ data: { nickname, message, updatedAt }, consecutive }) => {
-  const fromMe = nickname === 'cloer1';
+  const { user } = useAuth();
+  const myNickname = user.nickname;
+  const fromMe = nickname === myNickname;
   return (
     <div className={`${styles.chatBox} ${fromMe ? styles.fromMe : ''}`}>
       {consecutive || fromMe ? '' : <span className={styles.nickname}>{nickname}</span>}

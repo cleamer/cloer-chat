@@ -11,6 +11,7 @@ const server_client = (message) => ({
 export const EVENTS = {
   ...server_client('enter room'),
   ...server_client('send message'),
+  ...server_client('home'),
 };
 
 export const socketConnector = (namespace, options = {}) => {
@@ -18,6 +19,9 @@ export const socketConnector = (namespace, options = {}) => {
     path: '/ws',
     transports: ['websocket'],
     autoConnect: false,
+    // query: {
+    //   _nsp: namespace,
+    // },
     ...options,
   });
   socket.on('connect', () => {

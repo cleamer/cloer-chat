@@ -1,16 +1,19 @@
 import { EVENTS } from '../lib/webSocket';
 import { useRef } from 'react';
 import styles from './RoomInput.module.css';
+import { useAuth } from '../contexts/authContext';
 
 const RoomInput = ({ roomId, messageDispatch, actionTypes, socket }) => {
   console.log('RoomInput');
-  const userNickname = 'cloer1'; // TODO: JWT / localStorage / session storage /user context
+  const { user } = useAuth();
+  console.log(user);
+  const { userId, nickname } = user;
   const inputRef = useRef(null);
   const buttonRef = useRef(null);
 
   const sendHandler = () => {
     console.log('send the message');
-    const message = { nickname: userNickname, message: inputRef.current.value, updatedAt: Date.now() };
+    const message = { nickname, message: inputRef.current.value, updatedAt: Date.now() };
     messageDispatch({ type: actionTypes.ADD, payload: { message } });
     socket.emit(EVENTS.CLIENT__SEND_MESSAGE, roomId, message);
     inputRef.current.value = '';

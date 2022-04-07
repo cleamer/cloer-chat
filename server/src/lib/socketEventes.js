@@ -9,6 +9,7 @@ const server_client = (message) => ({
 const EVENTS = {
   ...server_client('enter room'),
   ...server_client('send message'),
+  ...server_client('home'),
 };
 
 export default EVENTS;

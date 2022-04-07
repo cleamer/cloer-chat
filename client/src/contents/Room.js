@@ -1,6 +1,7 @@
 import React, { useState, useReducer, useEffect } from 'react';
 import { useParams, useLocation } from 'react-router-dom';
 import { Header, MessageList, NavHeader, NavHeaderBack, NavHeaderMenu, RoomInput } from '../components';
+import { useAuth } from '../contexts/authContext';
 import { socketConnector, EVENTS } from '../lib/webSocket';
 
 import styles from './Room.module.css';
@@ -49,23 +50,23 @@ const MemoRoomInput = React.memo(({ roomId, messageDispatch }) => (
 
 const Room = () => {
   console.log('Room');
+  const { user } = useAuth();
   const { roomId } = useParams();
   const location = useLocation();
   const titleInit = location.state?.title || 'get title from server by http'; //TODO: useCallback
   const [title, setTitle] = useState(titleInit);
   const [messages, messageDispatch] = useReducer(messageReducer, []);
 
-  const user = { userId: 1, nickname: 'cloer' }; //FIXME:
-
   //TODO: if change title, get title using WS and call setTitle function
 
   useEffect(() => {
-    console.log('-- useEffect');
+    const { userId, nickname } = user;
     socket.connect();
-    socket.emit(EVENTS.CLIENT__ENTER_ROOM, roomId, user);
+    console.log(user);
+    socket.emit(EVENTS.CLIENT__ENTER_ROOM, roomId, { userId, nickname });
 
-    socket.on(EVENTS.SERVER__ENTER_ROOM, (socketId) => {
-      console.log(`This user just entered room-${roomId}!: ${socketId}`);
+    socket.on(EVENTS.SERVER__ENTER_ROOM, (nickname) => {
+      console.log(`This user just entered room-${roomId}!: ${nickname}`);
     });
     socket.on(EVENTS.SERVER__SEND_MESSAGE, (message) => {
       console.log(EVENTS.SERVER__SEND_MESSAGE);
