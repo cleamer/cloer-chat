@@ -1,10 +1,10 @@
 import React from 'react';
-import { useAuth } from '../contexts/authContext';
+import { useAuth } from '../contexts/auth/authContext';
 import styles from './Message.module.css';
 
 const Message = ({ data: { nickname, message, updatedAt }, consecutive }) => {
-  const { user } = useAuth();
-  const myNickname = user.nickname;
+  const { auth } = useAuth();
+  const myNickname = auth.user.nickname;
   const fromMe = nickname === myNickname;
   return (
     <div className={`${styles.chatBox} ${fromMe ? styles.fromMe : ''}`}>

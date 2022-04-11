@@ -53,6 +53,7 @@ const patchUser = async (req, res) => {
     return res.json(errorMessage(baseMessage.SERVER_ERROR));
   }
 };
+
 const getUserInfo = async (req, res) => {
   const userInfo = req.user;
   res.json(successMessage(baseMessage.SUCCESS_GET_USER_INFO, { userInfo }));

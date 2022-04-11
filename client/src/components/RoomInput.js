@@ -1,13 +1,12 @@
 import { EVENTS } from '../lib/webSocket';
 import { useRef } from 'react';
 import styles from './RoomInput.module.css';
-import { useAuth } from '../contexts/authContext';
+import { useAuth } from '../contexts/auth/authContext';
 
 const RoomInput = ({ roomId, messageDispatch, actionTypes, socket }) => {
   console.log('RoomInput');
-  const { user } = useAuth();
-  console.log(user);
-  const { userId, nickname } = user;
+  const { auth } = useAuth();
+  const { userId, nickname } = auth.user;
   const inputRef = useRef(null);
   const buttonRef = useRef(null);
 

@@ -2,7 +2,7 @@ import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { Lobby, Sign } from './layouts';
 import { Home, Room, SignIn, SignUp } from './contents';
 import { RequireSigIn, RequireSignOut, NewRoom } from './components';
-import AuthProvider from './contexts/authContext';
+import AuthProvider from './contexts/auth/authContext';
 import styles from './App.module.css';
 
 function App() {

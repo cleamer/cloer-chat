@@ -1,6 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
 import { Link, useNavigate, useOutletContext } from 'react-router-dom';
-import { useAuth } from '../contexts/authContext';
 import { useHTTP } from '../hooks/useAPI';
 import { UserValidate } from '../lib/validate';
 import styles from './SignInUp.module.css';
@@ -8,7 +7,6 @@ import styles from './SignInUp.module.css';
 const SignUp = () => {
   const setWarningMessage = useOutletContext();
   const navigate = useNavigate();
-  const { authMessage, setAuthMessage } = useAuth();
   const [cancelHTTP, HTTP] = useHTTP();
 
   const [email, setEmail] = useState('');
@@ -21,18 +19,8 @@ const SignUp = () => {
 
   useEffect(() => {
     emailRef.current.focus();
-    return () => {
-      cancelHTTP.cancel('unmount');
-      setWarningMessage('');
-    };
+    return () => cancelHTTP.cancel('unmount');
   }, []);
-
-  useEffect(() => {
-    if (authMessage) {
-      setWarningMessage(authMessage);
-      setAuthMessage('');
-    }
-  }, [authMessage]);
 
   useEffect(() => {
     isVaildInputsRef.current.email = UserValidate.email(email);

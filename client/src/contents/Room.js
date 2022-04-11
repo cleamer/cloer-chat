@@ -1,7 +1,7 @@
 import React, { useState, useReducer, useEffect } from 'react';
 import { useParams, useLocation } from 'react-router-dom';
 import { Header, MessageList, NavHeader, NavHeaderBack, NavHeaderMenu, RoomInput } from '../components';
-import { useAuth } from '../contexts/authContext';
+import { useAuth } from '../contexts/auth/authContext';
 import { socketConnector, EVENTS } from '../lib/webSocket';
 
 import styles from './Room.module.css';
@@ -50,7 +50,7 @@ const MemoRoomInput = React.memo(({ roomId, messageDispatch }) => (
 
 const Room = () => {
   console.log('Room');
-  const { user } = useAuth();
+  const { auth } = useAuth();
   const { roomId } = useParams();
   const location = useLocation();
   const titleInit = location.state?.title || 'get title from server by http'; //TODO: useCallback
@@ -59,27 +59,26 @@ const Room = () => {
 
   //TODO: if change title, get title using WS and call setTitle function
 
-  useEffect(() => {
-    const { userId, nickname } = user;
-    socket.connect();
-    console.log(user);
-    socket.emit(EVENTS.CLIENT__ENTER_ROOM, roomId, { userId, nickname });
+  // useEffect(() => {
+  //   const { userId, nickname } = auth.user;
+  //   socket.connect();
+  //   socket.emit(EVENTS.CLIENT__ENTER_ROOM, roomId, { userId, nickname });
 
-    socket.on(EVENTS.SERVER__ENTER_ROOM, (nickname) => {
-      console.log(`This user just entered room-${roomId}!: ${nickname}`);
-    });
-    socket.on(EVENTS.SERVER__SEND_MESSAGE, (message) => {
-      console.log(EVENTS.SERVER__SEND_MESSAGE);
-      console.log(message);
-      messageDispatch({ type: MESSAGES_ACTION_TYPES.ADD, payload: { message } });
-    });
+  //   socket.on(EVENTS.SERVER__ENTER_ROOM, (nickname) => {
+  //     console.log(`This user just entered room-${roomId}!: ${nickname}`);
+  //   });
+  //   socket.on(EVENTS.SERVER__SEND_MESSAGE, (message) => {
+  //     console.log(EVENTS.SERVER__SEND_MESSAGE);
+  //     console.log(message);
+  //     messageDispatch({ type: MESSAGES_ACTION_TYPES.ADD, payload: { message } });
+  //   });
 
-    messageDispatch({ type: MESSAGES_ACTION_TYPES.LOAD });
-    return () => {
-      // TODO: disconnect -> leave namespace
-      socket.disconnect();
-    };
-  }, []);
+  //   messageDispatch({ type: MESSAGES_ACTION_TYPES.LOAD });
+  //   return () => {
+  //     // TODO: disconnect -> leave namespace
+  //     socket.disconnect();
+  //   };
+  // }, []);
 
   return (
     <div className={styles.room}>

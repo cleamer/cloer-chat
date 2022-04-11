@@ -1,14 +1,16 @@
 import { useState, useEffect, useRef } from 'react';
 import { Link, useNavigate, useOutletContext } from 'react-router-dom';
-import { useAuth } from '../contexts/authContext';
+import { useAuth } from '../contexts/auth/authContext';
+import { SignInSuccess, SignInFailure } from '../contexts/auth/authStates';
 import { useHTTP } from '../hooks/useAPI';
 import { UserValidate } from '../lib/validate';
 import styles from './SignInUp.module.css';
 
 const SignIn = () => {
+  console.log('--- SignIn');
   const navigate = useNavigate();
   const setWarningMessage = useOutletContext();
-  const { setUser, authMessage, setAuthMessage } = useAuth();
+  const { setAuth } = useAuth();
   const [cancelHTTP, HTTP] = useHTTP();
 
   const [email, setEmail] = useState('');
@@ -19,18 +21,8 @@ const SignIn = () => {
 
   useEffect(() => {
     emailRef.current.focus();
-    return () => {
-      cancelHTTP.cancel('unmount');
-      setWarningMessage('');
-    };
+    return () => cancelHTTP.cancel('unmount');
   }, []);
-
-  useEffect(() => {
-    if (authMessage) {
-      setWarningMessage(authMessage);
-      setAuthMessage('');
-    }
-  }, [authMessage]);
 
   useEffect(() => {
     isVaildInputsRef.current.email = UserValidate.email(email);
@@ -47,10 +39,10 @@ const SignIn = () => {
     if (isVaildInputsRef.current.email && isVaildInputsRef.current.password) {
       try {
         const response = await HTTP('post', '/auth', { email, password });
-        if (response.isError) setUser(null);
+        if (response.isError) setAuth(SignInFailure(response.message));
         else if (response.isSuccess) {
           const userInfo = response.result.userInfo;
-          setUser(userInfo);
+          setAuth(SignInSuccess(userInfo));
           return navigate('/', { replace: true });
         }
         setWarningMessage(response.message);
